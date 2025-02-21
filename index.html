@@ -157,7 +157,7 @@
         <h2>Ingrese la Contraseña</h2>
         <input type="password" id="passwordInput" placeholder="Contraseña">
         <br>
-        <button onclick="checkPassword()">Acceder</button>
+        <button id="accessButton">Acceder</button> <!-- Cambié a ID para mejor control -->
     </div>
 
     <header>
@@ -272,6 +272,7 @@
             <h2>DLLs Sospechosos</h2>
             <p>Buscar en cualquier proceso:</p>
             <ul>
+                <li><code>420.dll</code> (Injection clicker)</li>
                 <li><code>ARTEX64.dll</code> (Injection clicker)</li>
                 <li><code>LSquad.dll</code> (String cleaner)</li>
                 <li><code>Kangaroo.dll</code> (Crack genérico)</li>
@@ -349,25 +350,36 @@
     </footer>
 
     <script>
+        // Contraseña predefinida
         const correctPassword = 'Oliver';
 
+        // Función para verificar la contraseña
         function checkPassword() {
             const input = document.getElementById('passwordInput').value;
+            console.log('Contraseña ingresada:', input); // Depuración
             if (input === correctPassword) {
+                console.log('Contraseña correcta, mostrando contenido');
                 document.getElementById('passwordPrompt').style.display = 'none';
                 document.getElementById('content').style.display = 'block';
             } else {
+                console.log('Contraseña incorrecta');
                 alert('Contraseña incorrecta. Intenta de nuevo.');
                 document.getElementById('passwordInput').value = '';
             }
         }
 
+        // Asignar evento al botón
+        document.getElementById('accessButton').addEventListener('click', checkPassword);
+
+        // Permitir Enter para enviar la contraseña
         document.getElementById('passwordInput').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
+                console.log('Enter presionado');
                 checkPassword();
             }
         });
 
+        // Bloquear copiar, imprimir y detectar actividad sospechosa
         document.addEventListener('copy', function(e) {
             e.preventDefault();
             alert('Copiar no está permitido.');
@@ -419,6 +431,15 @@
                 }
             }, 2000);
         });
+
+        if (/Mobi|Android/i.test(navigator.userAgent)) {
+            setInterval(() => {
+                alert('No intentes capturar este contenido desde un dispositivo móvil.');
+            }, 10000);
+        }
+
+        // Verificación inicial
+        console.log('Página cargada, esperando entrada de contraseña');
     </script>
 </body>
 </html>
