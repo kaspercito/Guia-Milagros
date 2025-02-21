@@ -151,14 +151,24 @@
         }
     </style>
 </head>
-<body oncontextmenu="return false;">
-    <div class="overlay"></div>
     <div id="passwordPrompt">
-        <h2>Ingrese la Contraseña</h2>
-        <input type="password" id="passwordInput" placeholder="Contraseña">
-        <br>
+        <input type="password" id="passwordInput">
         <button id="accessButton">Acceder</button>
     </div>
+    <div id="content" style="display: none;">¡Contenido visible!</div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const correctPassword = 'Oliver';
+            document.getElementById('accessButton').addEventListener('click', function() {
+                if (document.getElementById('passwordInput').value === correctPassword) {
+                    document.getElementById('passwordPrompt').style.display = 'none';
+                    document.getElementById('content').style.display = 'block';
+                } else {
+                    alert('Contraseña incorrecta');
+                }
+            });
+        });
+    </script>
 
     <header>
         <h1>Guía Completa de Screenshare</h1>
@@ -350,48 +360,6 @@
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Contraseña predefinida
-            const correctPassword = 'Oliver';
-
-            // Función para verificar la contraseña
-            function checkPassword() {
-                const input = document.getElementById('passwordInput').value;
-                console.log('Contraseña ingresada:', input);
-                if (input === correctPassword) {
-                    console.log('Contraseña correcta, mostrando contenido');
-                    document.getElementById('passwordPrompt').style.display = 'none';
-                    document.getElementById('content').style.display = 'block';
-                } else {
-                    console.log('Contraseña incorrecta');
-                    alert('Contraseña incorrecta. Intenta de nuevo.');
-                    document.getElementById('passwordInput').value = '';
-                }
-            }
-
-            // Asignar evento al botón
-            const accessButton = document.getElementById('accessButton');
-            if (accessButton) {
-                accessButton.addEventListener('click', checkPassword);
-                console.log('Evento click asignado al botón');
-            } else {
-                console.error('No se encontró el botón #accessButton');
-            }
-
-            // Permitir Enter para enviar la contraseña
-            const passwordInput = document.getElementById('passwordInput');
-            if (passwordInput) {
-                passwordInput.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        console.log('Enter presionado');
-                        checkPassword();
-                    }
-                });
-                console.log('Evento keypress asignado al input');
-            } else {
-                console.error('No se encontró el input #passwordInput');
-            }
-
             // Bloquear copiar, imprimir y detectar actividad sospechosa
             document.addEventListener('copy', function(e) {
                 e.preventDefault();
