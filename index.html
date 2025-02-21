@@ -354,8 +354,9 @@
             <p>Errores al abrir ProcessHacker, Administrador de Tareas, etc., ban por “Modificaciones ilegales”.</p>
         </div>
     </div>
+    
     <footer>
-        <p>Actualizado al 21 de febrero de 2025 | Creado por Kaspercito</p>
+        <p>Actualizado al <span id="updateDate"></span> | Creado por Kaspercito</p>
     </footer>
 
     <script>
@@ -390,7 +391,22 @@
                 }
             });
         }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Crear una función para obtener la fecha actual
+        function obtenerFechaActual() {
+            const fecha = new Date();
+            const opciones = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+            return fecha.toLocaleDateString('es-ES', opciones);
+        }
     
+        // Colocar la fecha actual en el elemento con id "updateDate"
+        const fechaElemento = document.getElementById('updateDate');
+        if (fechaElemento) {
+            fechaElemento.textContent = obtenerFechaActual();
+        }
+    });
+
         // Medidas anti-captura
         document.addEventListener('copy', function(e) {
             e.preventDefault();
