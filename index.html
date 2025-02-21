@@ -362,7 +362,7 @@
     </div>
     
     <footer>
-        <p>Actualizado el 21/02/2025 19:38 PM | Creado por Kaspercito</p>
+        <p>Actualizado el 21/02/2025 19:52 PM | Creado por Kaspercito</p>
     </footer>
 
     <script>
@@ -397,18 +397,46 @@
                 }
             });
         }
-
-        // Medidas anti-captura
+    
+        // Medidas anti-captura con excepción para URLs
         document.addEventListener('copy', function(e) {
+            const selection = window.getSelection();
+            const selectedElement = selection.anchorNode.parentElement;
+    
+            // Permitir copiar si es un enlace <a> o un <code> que parece URL o ruta
+            if (selectedElement.tagName === 'A' || 
+                (selectedElement.tagName === 'CODE' && 
+                 (selectedElement.textContent.includes('/') || 
+                  selectedElement.textContent.includes('\\') || 
+                  selectedElement.textContent.includes('http')))) {
+                // Permitir la copia normalmente
+                return true;
+            }
+    
+            // Bloquear copia en otros casos
             e.preventDefault();
-            alert('Copiar no está permitido.');
+            alert('Copiar no está permitido, excepto para URLs y rutas.');
         });
     
         document.addEventListener('keydown', function(e) {
+            const selection = window.getSelection();
+            const selectedElement = selection.anchorNode ? selection.anchorNode.parentElement : null;
+    
+            // Bloquear Ctrl+C salvo para URLs
             if ((e.ctrlKey || e.metaKey) && e.key === 'c') {
+                if (selectedElement && 
+                    (selectedElement.tagName === 'A' || 
+                     (selectedElement.tagName === 'CODE' && 
+                      (selectedElement.textContent.includes('/') || 
+                       selectedElement.textContent.includes('\\') || 
+                       selectedElement.textContent.includes('http'))))) {
+                    return true; // Permitir copiar
+                }
                 e.preventDefault();
-                alert('Copiar no está permitido.');
+                alert('Copiar no está permitido, excepto para URLs y rutas.');
             }
+    
+            // Bloquear otras combinaciones
             if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
                 e.preventDefault();
                 alert('Imprimir o guardar como PDF no está permitido.');
@@ -427,7 +455,7 @@
             e.preventDefault();
             alert('El clic derecho está deshabilitado.');
         });
-        
+    
         navigator.mediaDevices.ondevicechange = function() {
             alert('Se detectó un intento de grabación. El contenido está protegido.');
             document.getElementById('content').style.display = 'none';
