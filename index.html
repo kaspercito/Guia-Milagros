@@ -219,14 +219,17 @@
 
             <h3>Elementos Recientes</h3>
             <p>Ejecutar: <code>Windows + R</code> y escribir <code>shell:recent</code></p>
+            <img src="https://i.imgur.com/JZPhNcb.png" alt="Elementos Recientes">
             <p>Revisar lo abierto recientemente. Si aparece un clicker o cheat en Java, banear. Cheats en C++ (Vape, Dream, Slinky, Cucklord) no aparecerán por sus self-destruct.</p>
 
             <h3>Prefetch</h3>
             <p>Ejecutar: <code>Windows + R</code> y escribir <code>Prefetch</code></p>
+            <img src="https://i.imgur.com/zeWEynR.png" alt="Prefetch">
             <p>Buscar logs de archivos .exe ejecutados recientemente.</p>
 
             <h3>Archivos Temporales (Tempdata)</h3>
             <p>Ejecutar: <code>Windows + R</code> y escribir <code>%temp%</code></p>
+            <img src="https://i.imgur.com/hqa4Udp.png" alt="Archivos temporales">
             <p>Si aparece “JNATIVEHOOK” (log de autoclickers en Java), ban por “Modificaciones en SS”.</p>
         </div>
 
@@ -359,7 +362,7 @@
     </div>
     
     <footer>
-        <p>Actualizado el 21/02/2025 19:32 PM | Creado por Kaspercito</p>
+        <p>Actualizado el 21/02/2025 19:38 PM | Creado por Kaspercito</p>
     </footer>
 
     <script>
@@ -424,19 +427,7 @@
             e.preventDefault();
             alert('El clic derecho está deshabilitado.');
         });
-    
-        document.addEventListener('visibilitychange', function() {
-            if (document.hidden) {
-                document.getElementById('content').style.display = 'none';
-                alert('No intentes capturar el contenido.');
-                setTimeout(() => {
-                    if (document.getElementById('passwordPrompt').style.display === 'none') {
-                        document.getElementById('content').style.display = 'block';
-                    }
-                }, 1000);
-            }
-        });
-    
+        
         navigator.mediaDevices.ondevicechange = function() {
             alert('Se detectó un intento de grabación. El contenido está protegido.');
             document.getElementById('content').style.display = 'none';
