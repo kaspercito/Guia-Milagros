@@ -398,42 +398,57 @@
             });
         }
     
-        // Medidas anti-captura con excepción para URLs
+        // Lista de comandos o rutas comunes que deben ser copiables
+        const copyablePatterns = [
+            'C:\\$Recycle.Bin',
+            'shell:recent',
+            'Prefetch',
+            '%temp%',
+            'regedit',
+            'Equipo\\HKEY_CURRENT_USER',
+            'HKEY_CURRENT_USER',
+            ':\\users', // Para rutas como C:\Users
+            'http',     // Para URLs
+            '.exe',     // Para filtros como *.exe
+            '.dll',     // Para filtros como *.dll
+            '.jar',     // Para filtros como *.jar
+            '.cfg'      // Para configs de cheats
+        ];
+    
+        // Medidas anti-captura con excepción para URLs y rutas específicas
         document.addEventListener('copy', function(e) {
             const selection = window.getSelection();
+            const selectedText = selection.toString().trim();
             const selectedElement = selection.anchorNode.parentElement;
     
-            // Permitir copiar si es un enlace <a> o un <code> que parece URL o ruta
+            // Permitir copiar si es un enlace <a> o un <code> con patrones específicos
             if (selectedElement.tagName === 'A' || 
                 (selectedElement.tagName === 'CODE' && 
-                 (selectedElement.textContent.includes('/') || 
-                  selectedElement.textContent.includes('\\') || 
-                  selectedElement.textContent.includes('http')))) {
+                 copyablePatterns.some(pattern => selectedText.includes(pattern)))) {
                 // Permitir la copia normalmente
                 return true;
             }
     
             // Bloquear copia en otros casos
             e.preventDefault();
-            alert('Copiar no está permitido, excepto para URLs y rutas.');
+            alert('Copiar no está permitido, excepto para URLs, rutas y comandos específicos.');
         });
     
         document.addEventListener('keydown', function(e) {
             const selection = window.getSelection();
+            const selectedText = selection.toString().trim();
             const selectedElement = selection.anchorNode ? selection.anchorNode.parentElement : null;
     
-            // Bloquear Ctrl+C salvo para URLs
+            // Bloquear Ctrl+C salvo para URLs y rutas específicas
             if ((e.ctrlKey || e.metaKey) && e.key === 'c') {
                 if (selectedElement && 
                     (selectedElement.tagName === 'A' || 
                      (selectedElement.tagName === 'CODE' && 
-                      (selectedElement.textContent.includes('/') || 
-                       selectedElement.textContent.includes('\\') || 
-                       selectedElement.textContent.includes('http'))))) {
+                      copyablePatterns.some(pattern => selectedText.includes(pattern))))) {
                     return true; // Permitir copiar
                 }
                 e.preventDefault();
-                alert('Copiar no está permitido, excepto para URLs y rutas.');
+                alert('Copiar no está permitido, excepto para URLs, rutas y comandos específicos.');
             }
     
             // Bloquear otras combinaciones
