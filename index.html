@@ -10,8 +10,8 @@
             line-height: 1.6;
             margin: 0;
             padding: 0;
-            background-color: #1a1a1a; /* Fondo negro grisáceo */
-            color: #e0e0e0; /* Texto claro para contraste */
+            background-color: #1a1a1a;
+            color: #e0e0e0;
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
@@ -19,7 +19,7 @@
             position: relative;
         }
         header {
-            background: #0d0d0d; /* Negro profundo */
+            background: #0d0d0d;
             color: #fff;
             text-align: center;
             padding: 20px;
@@ -30,7 +30,7 @@
             font-size: 2.5em;
         }
         nav {
-            background: #262626; /* Gris oscuro */
+            background: #262626;
             padding: 10px;
             text-align: center;
         }
@@ -41,25 +41,25 @@
             font-weight: bold;
         }
         nav a:hover {
-            color: #ff4d4d; /* Rojo oscuro para hover */
+            color: #ff4d4d;
         }
         .container {
             max-width: 1000px;
             margin: 20px auto;
-            background: #2b2b2b; /* Fondo oscuro para el contenido */
+            background: #2b2b2b;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
             position: relative;
             z-index: 1;
-            display: none; /* Oculto por defecto */
+            display: none;
         }
         .section {
             margin-bottom: 30px;
         }
         h2 {
             color: #fff;
-            border-bottom: 2px solid #ff4d4d; /* Línea roja para destaque */
+            border-bottom: 2px solid #ff4d4d;
             padding-bottom: 5px;
         }
         h3 {
@@ -67,11 +67,11 @@
             margin-top: 20px;
         }
         code {
-            background: #404040; /* Gris oscuro */
+            background: #404040;
             padding: 2px 6px;
             border-radius: 3px;
             font-family: 'Courier New', Courier, monospace;
-            color: #ff9999; /* Rojo claro para código */
+            color: #ff9999;
         }
         pre {
             background: #333333;
@@ -116,7 +116,6 @@
                 display: none !important;
             }
         }
-        /* Formulario de contraseña en tema negro */
         #passwordPrompt {
             position: fixed;
             top: 50%;
@@ -141,20 +140,19 @@
         }
         #passwordPrompt button {
             padding: 10px 20px;
-            background: #ff4d4d; /* Rojo oscuro */
+            background: #ff4d4d;
             color: #fff;
             border: none;
             border-radius: 4px;
             cursor: pointer;
         }
         #passwordPrompt button:hover {
-            background: #cc0000; /* Rojo más oscuro */
+            background: #cc0000;
         }
     </style>
 </head>
 <body oncontextmenu="return false;">
     <div class="overlay"></div>
-    <!-- Formulario de contraseña -->
     <div id="passwordPrompt">
         <h2>Ingrese la Contraseña</h2>
         <input type="password" id="passwordInput" placeholder="Contraseña">
@@ -217,7 +215,7 @@
 
             <h3>Archivos Temporales (Tempdata)</h3>
             <p>Ejecutar: <code>Windows + R</code> y escribir <code>%temp%</code></p>
-            <p>Si aparece “JNATIVEHOOK” (log de autoclickers en Java), ban por “Cheat founds in SS”.</p>
+            <p>Si aparece “JNATIVEHOOK” (log de autoclickers en Java), ban por “Modificaciones en SS”.</p>
         </div>
 
         <div class="section" id="regedit">
@@ -256,7 +254,7 @@
             <p>Buscar “Servicio Asistente para la compatibilidad de programas”. Si está “Detenido”, ban por “Modificaciones en SS”.</p>
 
             <h3>Explorer.exe</h3>
-            <p>Doble clic en “Explorer.exe” > “General”. Si se reinició durante el freeze, ban por “Cheat founds in SS”.</p>
+            <p>Doble clic en “Explorer.exe” > “General”. Si se reinició durante el freeze, ban por “Modificaciones en SS”.</p>
             <p>Ir a “Memory” > Desmarcar “Hide free regions” > “Strings”:</p>
             <ol>
                 <li>Escribir “4”, marcar “Image” y “Mapped”, OK.</li>
@@ -279,7 +277,7 @@
                 <li><code>Kangaroo.dll</code> (Crack genérico)</li>
                 <li><code>DoNotAobScanMemory.dll</code> (Inyección de cheats)</li>
             </ul>
-            <p>Si aparecen, ban por “Cheats founds in SS”.</p>
+            <p>Si aparecen, ban por “Modificaciones en SS”.</p>
         </div>
 
         <div class="section" id="discord">
@@ -297,7 +295,7 @@
             <h2>Macros</h2>
             <h3>Razer Synapse</h3>
             <p>Ir a: <code>C:\Users\NombrePC\AppData\Local\Razer</code></p>
-            <p>Revisar “logs” > “macros”. Si está modificado recientemente, ban por “Cheat found in SS”.</p>
+            <p>Revisar “logs” > “macros”. Si está modificado recientemente, ban por “Modificaciones en SS”.</p>
 
             <h3>Logitech</h3>
             <p>Ir a: <code>C:\Users\%USERNAME%\AppData\Local\LGhub\accounts</code></p>
@@ -351,10 +349,8 @@
     </footer>
 
     <script>
-        // Contraseña predefinida (cámbiala por la que quieras)
-        const correctPassword = 'Oliver'; // Cambia esto por tu contraseña
+        const correctPassword = 'Oliver';
 
-        // Función para verificar la contraseña
         function checkPassword() {
             const input = document.getElementById('passwordInput').value;
             if (input === correctPassword) {
@@ -366,14 +362,12 @@
             }
         }
 
-        // Permitir Enter para enviar la contraseña
         document.getElementById('passwordInput').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 checkPassword();
             }
         });
 
-        // Bloquear copiar, imprimir y detectar actividad sospechosa
         document.addEventListener('copy', function(e) {
             e.preventDefault();
             alert('Copiar no está permitido.');
@@ -425,12 +419,6 @@
                 }
             }, 2000);
         });
-
-        if (/Mobi|Android/i.test(navigator.userAgent)) {
-            setInterval(() => {
-                alert('No intentes capturar este contenido desde un dispositivo móvil.');
-            }, 10000);
-        }
     </script>
 </body>
 </html>
