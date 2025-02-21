@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Completa de Screenshare</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+            color: #333;
+            /* Deshabilitar selección en todo el cuerpo */
+            -webkit-user-select: none; /* Chrome, Safari */
+            -moz-user-select: none; /* Firefox */
+            -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Estándar */
+        }
+        header {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+        nav {
+            background: #34495e;
+            padding: 10px;
+            text-align: center;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+        nav a:hover {
+            color: #3498db;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+        }
+        h3 {
+            color: #34495e;
+            margin-top: 20px;
+        }
+        code {
+            background: #eee;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        pre {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.05);
+        }
+        ul, ol {
+            margin-left: 20px;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #2c3e50;
+            color: white;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body oncontextmenu="return false;"> <!-- Deshabilitar clic derecho -->
+    <header>
+        <h1>Guía Completa de Screenshare</h1>
+    </header>
+    <nav>
+        <a href="#notas">Notas</a>
+        <a href="#ip">Evitar Robo de IP</a>
+        <a href="#metodos">Métodos Generales</a>
+        <a href="#regedit">Regedit</a>
+        <a href="#powershell">PowerShell</a>
+        <a href="#processhacker">ProcessHacker</a>
+        <a href="#dlls">DLLs</a>
+        <a href="#discord">Discord</a>
+        <a href="#macros">Macros</a>
+        <a href="#linux">Linux</a>
+        <a href="#extras">Extras</a>
+    </nav>
+    <div class="container">
+        <div class="section" id="notas">
+            <h2>Notas Iniciales</h2>
+            <ul>
+                <li>Asegurarse de que la persona no esté grabando. Revisar AnyDesk, Administrador de Tareas y extensiones de Google Chrome u otro navegador. Si tiene OBS, abrirlo para verificar que no esté grabando y cerrar el proceso.</li>
+                <li>Abrir Administrador de Tareas y verificar que no haya programas que puedan crashear o cerrar la sesión.</li>
+                <li>Siempre grabar cada SS, ya sea con OBS o AnyDesk.</li>
+                <li>Usar una VPN al hacer una SS o desactivar la conexión directa para evitar que saquen la IP mediante AnyDesk.</li>
+            </ul>
+        </div>
+
+        <div class="section" id="ip">
+            <h2>Evitar Robo de IP</h2>
+            <p>Aunque se sugiere usar VPN, también puedes desactivar la conexión directa en AnyDesk:</p>
+            <ul>
+                <li>La primera opción aparecerá activada; desmarcarla.</li>
+                <li>Entrar al AnyDesk del usuario y verificar que no esté grabando.</li>
+                <li>Las primeras 3 opciones en la configuración deben estar desmarcadas.</li>
+            </ul>
+        </div>
+
+        <div class="section" id="metodos">
+            <h2>Métodos Generales</h2>
+            <h3>Papelera de Reciclaje</h3>
+            <p>Ejecutar: <code>Windows + R</code> y escribir <code>C:\$Recycle.Bin</code></p>
+            <p>Comparar la fecha de modificación con la fecha y hora actual. Si modificó o borró algo recientemente, ban por “Modificaciones en SS”.</p>
+
+            <h3>Elementos Recientes</h3>
+            <p>Ejecutar: <code>Windows + R</code> y escribir <code>shell:recent</code></p>
+            <p>Revisar lo abierto recientemente. Si aparece un clicker o cheat en Java, banear. Cheats en C++ (Vape, Dream, Slinky, Cucklord) no aparecerán por sus self-destruct.</p>
+
+            <h3>Prefetch</h3>
+            <p>Ejecutar: <code>Windows + R</code> y escribir <code>Prefetch</code></p>
+            <p>Buscar logs de archivos .exe ejecutados recientemente.</p>
+
+            <h3>Archivos Temporales (Tempdata)</h3>
+            <p>Ejecutar: <code>Windows + R</code> y escribir <code>%temp%</code></p>
+            <p>Si aparece “JNATIVEHOOK” (log de autoclickers en Java), ban por “Cheat founds in SS”.</p>
+        </div>
+
+        <div class="section" id="regedit">
+            <h2>Regedit</h2>
+            <p>Ejecutar: <code>Windows + R</code> y escribir <code>regedit</code></p>
+            <h3>Revisión de DLLs</h3>
+            <p>Ir a: <code>Equipo\HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\ComDlg32\OpenSavePidlMRU\dll</code></p>
+            <p>Click derecho en “dll” > Exportar. Abrir el .txt generado y revisar los .dll listados.</p>
+
+            <h3>Compatibilidad</h3>
+            <p>Ir a: <code>Equipo\HKEY_CURRENT_USER\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Compatibility Assistant\Store</code></p>
+            <p>Buscar nombres de cheats o .exe sospechosos.</p>
+
+            <h3>Funciones Desactivadas</h3>
+            <p>Ir a: <code>HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\UserAssist</code></p>
+            <p>Si existe "NotLog", ban por ocultar registros.</p>
+            <p>Ir a: <code>HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer</code></p>
+            <p>Si existe "NoRecentDocsHistory", ban por desactivar historial reciente.</p>
+        </div>
+
+        <div class="section" id="powershell">
+            <h2>PowerShell</h2>
+            <p>Abrir PowerShell como administrador y ejecutar:</p>
+            <pre>MMAgent</pre>
+            <p>Si “ApplicationLaunchPrefetching” o “MemoryCompressive” están en false, ban por “Modificaciones en SS”.</p>
+            <pre>gci -recurse -filter *.exe</pre>
+            <p>Lista todos los .exe en memoria comprimida. Buscar nombres raros o de cheats.</p>
+            <p>Opcional: <code>gci -recurse -filter *.cfg</code> para configs de cheats.</p>
+        </div>
+
+        <div class="section" id="processhacker">
+            <h2>ProcessHacker</h2>
+            <p>Ejecutar ProcessHacker como administrador:</p>
+            <h3>Servicio PCA</h3>
+            <p>Ejecutar: <code>Windows + R</code> y escribir <code>Services.msc</code></p>
+            <p>Buscar “Servicio Asistente para la compatibilidad de programas”. Si está “Detenido”, ban por “Modificaciones en SS”.</p>
+
+            <h3>Explorer.exe</h3>
+            <p>Doble clic en “Explorer.exe” > “General”. Si se reinició durante el freeze, ban por “Cheat founds in SS”.</p>
+            <p>Ir a “Memory” > Desmarcar “Hide free regions” > “Strings”:</p>
+            <ol>
+                <li>Escribir “4”, marcar “Image” y “Mapped”, OK.</li>
+                <li>Filter > “Contains (case-insensitive)” > Escribir <code>File://</code>.</li>
+                <li>Repetir con <code>.exe</code>.</li>
+                <li>Buscar archivos sospechosos.</li>
+            </ol>
+            <p>Buscar “Pcaclient” con los mismos filtros. Guardar “TRACE,0000” y revisar .exe recientes.</p>
+
+            <h3>Otros Procesos</h3>
+            <p>Revisar “csrss” o “dwm” con filtros <code>:\users</code> y <code>.exe</code>.</p>
+        </div>
+
+        <div class="section" id="dlls">
+            <h2>DLLs Sospechosos</h2>
+            <p>Buscar en cualquier proceso:</p>
+            <ul>
+                <li><code>ARTEX64.dll</code> (Injection clicker)</li>
+                <li><code>LSquad.dll</code> (String cleaner)</li>
+                <li><code>Kangaroo.dll</code> (Crack genérico)</li>
+                <li><code>DoNotAobScanMemory.dll</code> (Inyección de cheats)</li>
+            </ul>
+            <p>Si aparecen, ban por “Cheats founds in SS”.</p>
+        </div>
+
+        <div class="section" id="discord">
+            <h2>Discord</h2>
+            <p>En ProcessHacker, buscar “discord”:</p>
+            <ol>
+                <li>Memory > Desmarcar “Hide free regions” > Strings > “4”, “Image”, “Mapped”.</li>
+                <li>Filter > “Contains (case-insensitive)” > <code>cdn.discordapp.com</code>.</li>
+                <li>Repetir con <code>attachments</code>.</li>
+                <li>Buscar .exe, .dll o .jar descargados.</li>
+            </ol>
+        </div>
+
+        <div class="section" id="macros">
+            <h2>Macros</h2>
+            <h3>Razer Synapse</h3>
+            <p>Ir a: <code>C:\Users\NombrePC\AppData\Local\Razer</code></p>
+            <p>Revisar “logs” > “macros”. Si está modificado recientemente, ban por “Cheat found in SS”.</p>
+
+            <h3>Logitech</h3>
+            <p>Ir a: <code>C:\Users\%USERNAME%\AppData\Local\LGhub\accounts</code></p>
+            <p>Si “.settings” está modificado recientemente, ban.</p>
+
+            <h3>RedDragon</h3>
+            <p>Ir a: <code>C:\Users\NombrePC\AppData\Roaming\REDRAGON Gaming Mouse</code></p>
+            <p>Revisar “Profile”. Si los .proof están modificados antes de la SS, ban.</p>
+        </div>
+
+        <div class="section" id="linux">
+            <h2>Guía para Linux</h2>
+            <ol>
+                <li>Preguntar qué distribución usa (Ubuntu, Mint, etc.).</li>
+                <li>Descargar AnyDesk: <a href="https://anydesk.com/es/downloads/linux">Link</a>.</li>
+                <li>Ordenar carpetas por fecha de modificación.</li>
+                <li><code>Ctrl + H</code> > Revisar <code>.minecraft</code> (mods, logs, etc.).</li>
+                <li>Buscar autoclickers obvios en el buscador (AutoClicker, ApolloClicker, etc.).</li>
+                <li>Terminal: <code>history</code> para comandos recientes.</li>
+                <li>Filtrar: <code>history | grep .jar</code>, <code>history | grep clicker</code>, etc.</li>
+                <li><code>dpkg --get-selections</code> para programas instalados.</li>
+            </ol>
+        </div>
+
+        <div class="section" id="extras">
+            <h2>Extras</h2>
+            <h3>DLL Flags</h3>
+            <p>Ejecutar en CMD: <code>regsvr32 C:\Windows\System32\nombre.dll</code> o <code>regsvr32 C:\Users\User\Downloads\nombre.dll</code>.</p>
+
+            <h3>Anti Tamper</h3>
+            <p>Buscar “Anti Tamper” en Inicio y desactivarlo si está activado.</p>
+
+            <h3>SmartScreen</h3>
+            <p>Inicio > “Smartscreen” > “Control de aplicaciones y navegador” > Desactivar las primeras 2 opciones.</p>
+
+            <h3>DNS Cache</h3>
+            <p>PowerShell: <code>Get-DnsClientCache</code>. Revisar dominios recientes (ej. “Cucklord.pro”).</p>
+
+            <h3>C# Cheats</h3>
+            <p>En “dllhost”, buscar <code>DoNotAobScanMemory.dll</code>. Si aparece, ban por “Modificaciones en SS”.</p>
+
+            <h3>Programas Ilegales</h3>
+            <p>Iobit Unlocker, AutoHotKey, Macro Recorder, etc. Ban por “Modificaciones en SS”.</p>
+
+            <h3>Bloqueo de Funciones</h3>
+            <p>Errores al abrir ProcessHacker, Administrador de Tareas, etc., ban por “Modificaciones ilegales”.</p>
+        </div>
+    </div>
+    <footer>
+        <p>Actualizado al 21 de febrero de 2025 | Creado por [Tu Nombre]</p>
+    </footer>
+
+    <!-- JavaScript para bloquear copiar y atajos -->
+    <script>
+        // Bloquear evento de copiar
+        document.addEventListener('copy', function(e) {
+            e.preventDefault();
+            alert('Copiar no está permitido.');
+            return false;
+        });
+
+        // Bloquear atajos de copiar (Ctrl+C, Cmd+C)
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'c') {
+                e.preventDefault();
+                alert('Copiar no está permitido.');
+            }
+        });
+
+        // Bloquear clic derecho (menú contextual)
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            alert('El clic derecho está deshabilitado.');
+        });
+    </script>
+</body>
+</html>
