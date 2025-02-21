@@ -3,7 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guía Completa de Screenshare</title>
+    <title>Guía SS Milagros</title>
+        <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-724N3MWGF2"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+    
+      gtag('config', 'G-724N3MWGF2');
+    </script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -151,24 +160,14 @@
         }
     </style>
 </head>
+<body oncontextmenu="return false;">
+    <div class="overlay"></div>
     <div id="passwordPrompt">
-        <input type="password" id="passwordInput">
-        <button id="accessButton">Acceder</button>
+        <h2>Ingrese la Contraseña</h2>
+        <input type="password" id="passwordInput" placeholder="Contraseña">
+        <br>
+        <button id="accessButton">Acceder</button> <!-- Cambié a ID para mejor control -->
     </div>
-    <div id="content" style="display: none;">¡Contenido visible!</div>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const correctPassword = 'Oliver';
-            document.getElementById('accessButton').addEventListener('click', function() {
-                if (document.getElementById('passwordInput').value === correctPassword) {
-                    document.getElementById('passwordPrompt').style.display = 'none';
-                    document.getElementById('content').style.display = 'block';
-                } else {
-                    alert('Contraseña incorrecta');
-                }
-            });
-        });
-    </script>
 
     <header>
         <h1>Guía Completa de Screenshare</h1>
@@ -360,67 +359,96 @@
     </footer>
 
     <script>
-            // Bloquear copiar, imprimir y detectar actividad sospechosa
-            document.addEventListener('copy', function(e) {
+        // Contraseña predefinida
+        const correctPassword = 'Oliver';
+
+        // Función para verificar la contraseña
+        function checkPassword() {
+            const input = document.getElementById('passwordInput').value;
+            console.log('Contraseña ingresada:', input); // Depuración
+            if (input === correctPassword) {
+                console.log('Contraseña correcta, mostrando contenido');
+                document.getElementById('passwordPrompt').style.display = 'none';
+                document.getElementById('content').style.display = 'block';
+            } else {
+                console.log('Contraseña incorrecta');
+                alert('Contraseña incorrecta. Intenta de nuevo.');
+                document.getElementById('passwordInput').value = '';
+            }
+        }
+
+        // Asignar evento al botón
+        document.getElementById('accessButton').addEventListener('click', checkPassword);
+
+        // Permitir Enter para enviar la contraseña
+        document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                console.log('Enter presionado');
+                checkPassword();
+            }
+        });
+
+        // Bloquear copiar, imprimir y detectar actividad sospechosa
+        document.addEventListener('copy', function(e) {
+            e.preventDefault();
+            alert('Copiar no está permitido.');
+            return false;
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'c') {
                 e.preventDefault();
                 alert('Copiar no está permitido.');
-                return false;
-            });
-
-            document.addEventListener('keydown', function(e) {
-                if ((e.ctrlKey || e.metaKey) && e.key === 'c') {
-                    e.preventDefault();
-                    alert('Copiar no está permitido.');
-                }
-                if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
-                    e.preventDefault();
-                    alert('Imprimir o guardar como PDF no está permitido.');
-                }
-                if ((e.ctrlKey || e.metaKey) && e.key === 's') {
-                    e.preventDefault();
-                    alert('Guardar la página no está permitido.');
-                }
-                if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I')) {
-                    e.preventDefault();
-                    alert('Inspeccionar el código no está permitido.');
-                }
-            });
-
-            document.addEventListener('contextmenu', function(e) {
+            }
+            if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
                 e.preventDefault();
-                alert('El clic derecho está deshabilitado.');
-            });
+                alert('Imprimir o guardar como PDF no está permitido.');
+            }
+            if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                e.preventDefault();
+                alert('Guardar la página no está permitido.');
+            }
+            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I')) {
+                e.preventDefault();
+                alert('Inspeccionar el código no está permitido.');
+            }
+        });
 
-            document.addEventListener('visibilitychange', function() {
-                if (document.hidden) {
-                    document.getElementById('content').style.display = 'none';
-                    alert('No intentes capturar el contenido.');
-                    setTimeout(() => {
-                        if (document.getElementById('passwordPrompt').style.display === 'none') {
-                            document.getElementById('content').style.display = 'block';
-                        }
-                    }, 1000);
-                }
-            });
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            alert('El clic derecho está deshabilitado.');
+        });
 
-            navigator.mediaDevices.ondevicechange = function() {
-                alert('Se detectó un intento de grabación. El contenido está protegido.');
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) {
                 document.getElementById('content').style.display = 'none';
+                alert('No intentes capturar el contenido.');
                 setTimeout(() => {
                     if (document.getElementById('passwordPrompt').style.display === 'none') {
                         document.getElementById('content').style.display = 'block';
                     }
-                }, 2000);
-            };
-
-            if (/Mobi|Android/i.test(navigator.userAgent)) {
-                setInterval(() => {
-                    alert('No intentes capturar este contenido desde un dispositivo móvil.');
-                }, 10000);
+                }, 1000);
             }
-
-            console.log('Página cargada, eventos asignados');
         });
+
+        navigator.mediaDevices.ondevicechange = function() {
+            alert('Se detectó un intento de grabación. El contenido está protegido.');
+            document.getElementById('content').style.display = 'none';
+            setTimeout(() => {
+                if (document.getElementById('passwordPrompt').style.display === 'none') {
+                    document.getElementById('content').style.display = 'block';
+                }
+            }, 2000);
+        });
+
+        if (/Mobi|Android/i.test(navigator.userAgent)) {
+            setInterval(() => {
+                alert('No intentes capturar este contenido desde un dispositivo móvil.');
+            }, 10000);
+        }
+
+        // Verificación inicial
+        console.log('Página cargada, esperando entrada de contraseña');
     </script>
 </body>
 </html>
