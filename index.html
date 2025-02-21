@@ -16,6 +16,7 @@
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
+            position: relative;
         }
         header {
             background: #2c3e50;
@@ -49,6 +50,8 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 1;
         }
         .section {
             margin-bottom: 30px;
@@ -94,9 +97,27 @@
             bottom: 0;
             width: 100%;
         }
+        /* Capa protectora transparente */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0); /* Invisible pero bloquea interacción */
+            z-index: 9999;
+            pointer-events: none; /* Permite clics debajo */
+        }
+        /* Ocultar contenido al imprimir */
+        @media print {
+            body, .container {
+                display: none !important;
+            }
+        }
     </style>
 </head>
-<body oncontextmenu="return false;"> <!-- Deshabilitar clic derecho -->
+<body oncontextmenu="return false;">
+    <div class="overlay"></div> <!-- Capa protectora -->
     <header>
         <h1>Guía Completa de Screenshare</h1>
     </header>
@@ -113,7 +134,7 @@
         <a href="#linux">Linux</a>
         <a href="#extras">Extras</a>
     </nav>
-    <div class="container">
+    <div class="container" id="content">
         <div class="section" id="notas">
             <h2>Notas Iniciales</h2>
             <ul>
@@ -127,14 +148,13 @@
         <div class="section" id="ip">
             <h2>Evitar Robo de IP</h2>
             <p>Aunque se sugiere usar VPN, también puedes desactivar la conexión directa en AnyDesk:</p>
-            <!-- Ejemplo de imagen de AnyDesk -->
             <img src="https://i.imgur.com/8jdIPL4.png" alt="Configuración de AnyDesk">
             <ul>
                 <li>La primera opción aparecerá activada; desmarcarla.</li>
                 <li>Entrar al AnyDesk del usuario y verificar que no esté grabando.</li>
                 <li>Las primeras 3 opciones en la configuración deben estar desmarcadas.</li>
-                <img src="https://i.imgur.com/sg1StVp.png" alt="Configuración de AnyDesk">
             </ul>
+            <img src="https://i.imgur.com/sg1StVp.png" alt="Configuración de AnyDesk">
         </div>
 
         <div class="section" id="metodos">
@@ -286,16 +306,14 @@
         <p>Actualizado al 21 de febrero de 2025 | Creado por Kaspercito</p>
     </footer>
 
-    <!-- JavaScript para bloquear copiar y atajos -->
     <script>
-        // Bloquear evento de copiar
+        // Bloquear copiar, imprimir y detectar actividad sospechosa
         document.addEventListener('copy', function(e) {
             e.preventDefault();
             alert('Copiar no está permitido.');
             return false;
         });
 
-        // Bloquear atajos de copiar (Ctrl+C, Cmd+C) y imprimir (Ctrl+P, Cmd+P)
         document.addEventListener('keydown', function(e) {
             // Bloquear Ctrl+C o Cmd+C
             if ((e.ctrlKey || e.metaKey) && e.key === 'c') {
@@ -307,13 +325,52 @@
                 e.preventDefault();
                 alert('Imprimir o guardar como PDF no está permitido.');
             }
+            // Bloquear Ctrl+S o Cmd+S (guardar página)
+            if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                e.preventDefault();
+                alert('Guardar la página no está permitido.');
+            }
         });
 
-        // Bloquear clic derecho (menú contextual)
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
             alert('El clic derecho está deshabilitado.');
         });
+
+        // Detectar pérdida de foco (posible captura o grabación)
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) {
+                document.getElementById('content').style.display = 'none';
+                alert('No intentes capturar el contenido.');
+                setTimeout(() => {
+                    document.getElementById('content').style.display = 'block';
+                }, 1000); // Restaura después de 1 segundo
+            }
+        });
+
+        // Detectar intento de grabación (experimental, no siempre funciona)
+        navigator.mediaDevices.ondevicechange = function() {
+            alert('Se detectó un intento de grabación. El contenido está protegido.');
+            document.getElementById('content').style.display = 'none';
+            setTimeout(() => {
+                document.getElementById('content').style.display = 'block';
+            }, 2000);
+        };
+
+        // Bloquear inspección de código (parcial)
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I')) {
+                e.preventDefault();
+                alert('Inspeccionar el código no está permitido.');
+            }
+        });
+
+        // Dificultar capturas en móviles con mensaje persistente
+        if (/Mobi|Android/i.test(navigator.userAgent)) {
+            setInterval(() => {
+                alert('No intentes capturar este contenido desde un dispositivo móvil.');
+            }, 10000); // Alerta cada 10 segundos
+        }
     </script>
 </body>
 </html>
