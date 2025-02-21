@@ -283,7 +283,7 @@
         </div>
     </div>
     <footer>
-        <p>Actualizado al 21 de febrero de 2025 | Creado por [Tu Nombre]</p>
+        <p>Actualizado al 21 de febrero de 2025 | Creado por Kaspercito</p>
     </footer>
 
     <!-- JavaScript para bloquear copiar y atajos -->
@@ -295,11 +295,17 @@
             return false;
         });
 
-        // Bloquear atajos de copiar (Ctrl+C, Cmd+C)
+        // Bloquear atajos de copiar (Ctrl+C, Cmd+C) y imprimir (Ctrl+P, Cmd+P)
         document.addEventListener('keydown', function(e) {
+            // Bloquear Ctrl+C o Cmd+C
             if ((e.ctrlKey || e.metaKey) && e.key === 'c') {
                 e.preventDefault();
                 alert('Copiar no está permitido.');
+            }
+            // Bloquear Ctrl+P o Cmd+P
+            if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+                e.preventDefault();
+                alert('Imprimir o guardar como PDF no está permitido.');
             }
         });
 
