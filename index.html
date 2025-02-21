@@ -28,6 +28,12 @@
             user-select: none;
             position: relative;
         }
+        code, a {
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            -ms-user-select: text;
+            user-select: text; /* Permite seleccionar texto en <code> y <a> */
+        }
         header {
             background: #0d0d0d;
             color: #fff;
@@ -368,7 +374,7 @@
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         const correctPassword = 'Oliver';
-    
+
         function checkPassword() {
             const input = document.getElementById('passwordInput').value;
             console.log('Contraseña ingresada:', input);
@@ -382,12 +388,12 @@
                 document.getElementById('passwordInput').value = '';
             }
         }
-    
+
         const accessButton = document.getElementById('accessButton');
         if (accessButton) {
             accessButton.addEventListener('click', checkPassword);
         }
-    
+
         const passwordInput = document.getElementById('passwordInput');
         if (passwordInput) {
             passwordInput.addEventListener('keypress', function(e) {
@@ -397,60 +403,33 @@
                 }
             });
         }
-    
-        // Lista de comandos o rutas comunes que deben ser copiables
-        const copyablePatterns = [
-            'C:\\$Recycle.Bin',
-            'shell:recent',
-            'Prefetch',
-            '%temp%',
-            'regedit',
-            'Equipo\\HKEY_CURRENT_USER',
-            'HKEY_CURRENT_USER',
-            ':\\users', // Para rutas como C:\Users
-            'http',     // Para URLs
-            '.exe',     // Para filtros como *.exe
-            '.dll',     // Para filtros como *.dll
-            '.jar',     // Para filtros como *.jar
-            '.cfg'      // Para configs de cheats
-        ];
-    
-        // Medidas anti-captura con excepción para URLs y rutas específicas
+
+        // Permitir copiar solo en <code> y <a>
         document.addEventListener('copy', function(e) {
             const selection = window.getSelection();
-            const selectedText = selection.toString().trim();
-            const selectedElement = selection.anchorNode.parentElement;
-    
-            // Permitir copiar si es un enlace <a> o un <code> con patrones específicos
-            if (selectedElement.tagName === 'A' || 
-                (selectedElement.tagName === 'CODE' && 
-                 copyablePatterns.some(pattern => selectedText.includes(pattern)))) {
-                // Permitir la copia normalmente
-                return true;
+            const selectedElement = selection.anchorNode ? selection.anchorNode.parentElement : null;
+
+            if (selectedElement && (selectedElement.tagName === 'CODE' || selectedElement.tagName === 'A')) {
+                return true; // Permitir copiar
             }
-    
-            // Bloquear copia en otros casos
+
             e.preventDefault();
-            alert('Copiar no está permitido, excepto para URLs, rutas y comandos específicos.');
+            alert('Copiar no está permitido, excepto para rutas, comandos y enlaces.');
         });
-    
+
         document.addEventListener('keydown', function(e) {
             const selection = window.getSelection();
-            const selectedText = selection.toString().trim();
             const selectedElement = selection.anchorNode ? selection.anchorNode.parentElement : null;
-    
-            // Bloquear Ctrl+C salvo para URLs y rutas específicas
+
+            // Permitir Ctrl+C solo en <code> o <a>
             if ((e.ctrlKey || e.metaKey) && e.key === 'c') {
-                if (selectedElement && 
-                    (selectedElement.tagName === 'A' || 
-                     (selectedElement.tagName === 'CODE' && 
-                      copyablePatterns.some(pattern => selectedText.includes(pattern))))) {
-                    return true; // Permitir copiar
+                if (selectedElement && (selectedElement.tagName === 'CODE' || selectedElement.tagName === 'A')) {
+                    return true;
                 }
                 e.preventDefault();
-                alert('Copiar no está permitido, excepto para URLs, rutas y comandos específicos.');
+                alert('Copiar no está permitido, excepto para rutas, comandos y enlaces.');
             }
-    
+
             // Bloquear otras combinaciones
             if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
                 e.preventDefault();
@@ -465,28 +444,12 @@
                 alert('Inspeccionar el código no está permitido.');
             }
         });
-    
+
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
             alert('El clic derecho está deshabilitado.');
         });
-    
-        navigator.mediaDevices.ondevicechange = function() {
-            alert('Se detectó un intento de grabación. El contenido está protegido.');
-            document.getElementById('content').style.display = 'none';
-            setTimeout(() => {
-                if (document.getElementById('passwordPrompt').style.display === 'none') {
-                    document.getElementById('content').style.display = 'block';
-                }
-            }, 2000);
-        };
-    
-        if (/Mobi|Android/i.test(navigator.userAgent)) {
-            setInterval(() => {
-                alert('No intentes capturar este contenido desde un dispositivo móvil.');
-            }, 10000);
-        }
-    
+
         console.log('Página cargada, esperando entrada de contraseña');
     });
     </script>
