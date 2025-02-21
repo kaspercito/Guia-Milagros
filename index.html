@@ -7,77 +7,161 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            line-height: 1.6;
             margin: 0;
             padding: 0;
-            background-color: #f0f2f5;
-            color: #333;
+            background-color: #1a1a1a; /* Fondo negro grisáceo */
+            color: #e0e0e0; /* Texto claro para contraste */
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
-            overflow: hidden; /* Evitar scroll innecesario */
+            position: relative;
         }
         header {
-            background: #2c3e50;
-            color: white;
+            background: #0d0d0d; /* Negro profundo */
+            color: #fff;
             text-align: center;
             padding: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            position: relative;
-            z-index: 10;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);
         }
         h1 {
             margin: 0;
             font-size: 2.5em;
         }
         nav {
-            background: #34495e;
+            background: #262626; /* Gris oscuro */
             padding: 10px;
             text-align: center;
-            position: relative;
-            z-index: 10;
         }
         nav a {
-            color: white;
+            color: #fff;
             text-decoration: none;
             margin: 0 15px;
             font-weight: bold;
         }
         nav a:hover {
-            color: #3498db;
+            color: #ff4d4d; /* Rojo oscuro para hover */
         }
         .container {
             max-width: 1000px;
             margin: 20px auto;
+            background: #2b2b2b; /* Fondo oscuro para el contenido */
             padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
             position: relative;
             z-index: 1;
+            display: none; /* Oculto por defecto */
         }
-        canvas {
-            border-radius: 8px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
-            width: 100%;
+        .section {
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #fff;
+            border-bottom: 2px solid #ff4d4d; /* Línea roja para destaque */
+            padding-bottom: 5px;
+        }
+        h3 {
+            color: #d9d9d9;
+            margin-top: 20px;
+        }
+        code {
+            background: #404040; /* Gris oscuro */
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', Courier, monospace;
+            color: #ff9999; /* Rojo claro para código */
+        }
+        pre {
+            background: #333333;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
+            color: #e0e0e0;
+        }
+        ul, ol {
+            margin-left: 20px;
+        }
+        img {
+            max-width: 100%;
             height: auto;
+            margin: 10px 0;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+            border: 1px solid #404040;
         }
         footer {
             text-align: center;
             padding: 20px;
-            background: #2c3e50;
-            color: white;
+            background: #0d0d0d;
+            color: #fff;
             position: relative;
             bottom: 0;
             width: 100%;
-            z-index: 10;
         }
-        /* Ocultar contenido al imprimir */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0);
+            z-index: 9999;
+            pointer-events: none;
+        }
         @media print {
-            body {
+            body, .container {
                 display: none !important;
             }
+        }
+        /* Formulario de contraseña en tema negro */
+        #passwordPrompt {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            text-align: center;
+            color: #e0e0e0;
+        }
+        #passwordPrompt input {
+            padding: 10px;
+            margin: 10px 0;
+            width: 80%;
+            border: 1px solid #404040;
+            border-radius: 4px;
+            background: #333333;
+            color: #fff;
+        }
+        #passwordPrompt button {
+            padding: 10px 20px;
+            background: #ff4d4d; /* Rojo oscuro */
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #passwordPrompt button:hover {
+            background: #cc0000; /* Rojo más oscuro */
         }
     </style>
 </head>
 <body oncontextmenu="return false;">
+    <div class="overlay"></div>
+    <!-- Formulario de contraseña -->
+    <div id="passwordPrompt">
+        <h2>Ingrese la Contraseña</h2>
+        <input type="password" id="passwordInput" placeholder="Contraseña">
+        <br>
+        <button onclick="checkPassword()">Acceder</button>
+    </div>
+
     <header>
         <h1>Guía Completa de Screenshare</h1>
     </header>
@@ -94,90 +178,209 @@
         <a href="#linux">Linux</a>
         <a href="#extras">Extras</a>
     </nav>
-    <div class="container">
-        <canvas id="contentCanvas"></canvas>
+    <div class="container" id="content">
+        <div class="section" id="notas">
+            <h2>Notas Iniciales</h2>
+            <ul>
+                <li>Asegurarse de que la persona no esté grabando. Revisar AnyDesk, Administrador de Tareas y extensiones de Google Chrome u otro navegador. Si tiene OBS, abrirlo para verificar que no esté grabando y cerrar el proceso.</li>
+                <li>Abrir Administrador de Tareas y verificar que no haya programas que puedan crashear o cerrar la sesión.</li>
+                <li>Siempre grabar cada SS, ya sea con OBS o AnyDesk.</li>
+                <li>Usar una VPN al hacer una SS o desactivar la conexión directa para evitar que saquen la IP mediante AnyDesk.</li>
+            </ul>
+        </div>
+
+        <div class="section" id="ip">
+            <h2>Evitar Robo de IP</h2>
+            <p>Aunque se sugiere usar VPN, también puedes desactivar la conexión directa en AnyDesk:</p>
+            <img src="https://i.imgur.com/8jdIPL4.png" alt="Configuración de AnyDesk">
+            <ul>
+                <li>La primera opción aparecerá activada; desmarcarla.</li>
+                <li>Entrar al AnyDesk del usuario y verificar que no esté grabando.</li>
+                <li>Las primeras 3 opciones en la configuración deben estar desmarcadas.</li>
+            </ul>
+            <img src="https://i.imgur.com/sg1StVp.png" alt="Configuración de AnyDesk">
+        </div>
+
+        <div class="section" id="metodos">
+            <h2>Métodos Generales</h2>
+            <h3>Papelera de Reciclaje</h3>
+            <p>Ejecutar: <code>Windows + R</code> y escribir <code>C:\$Recycle.Bin</code></p>
+            <p>Comparar la fecha de modificación con la fecha y hora actual. Si modificó o borró algo recientemente, ban por “Modificaciones en SS”.</p>
+
+            <h3>Elementos Recientes</h3>
+            <p>Ejecutar: <code>Windows + R</code> y escribir <code>shell:recent</code></p>
+            <p>Revisar lo abierto recientemente. Si aparece un clicker o cheat en Java, banear. Cheats en C++ (Vape, Dream, Slinky, Cucklord) no aparecerán por sus self-destruct.</p>
+
+            <h3>Prefetch</h3>
+            <p>Ejecutar: <code>Windows + R</code> y escribir <code>Prefetch</code></p>
+            <p>Buscar logs de archivos .exe ejecutados recientemente.</p>
+
+            <h3>Archivos Temporales (Tempdata)</h3>
+            <p>Ejecutar: <code>Windows + R</code> y escribir <code>%temp%</code></p>
+            <p>Si aparece “JNATIVEHOOK” (log de autoclickers en Java), ban por “Cheat founds in SS”.</p>
+        </div>
+
+        <div class="section" id="regedit">
+            <h2>Regedit</h2>
+            <p>Ejecutar: <code>Windows + R</code> y escribir <code>regedit</code></p>
+            <h3>Revisión de DLLs</h3>
+            <p>Ir a: <code>Equipo\HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\ComDlg32\OpenSavePidlMRU\dll</code></p>
+            <p>Click derecho en “dll” > Exportar. Abrir el .txt generado y revisar los .dll listados.</p>
+
+            <h3>Compatibilidad</h3>
+            <p>Ir a: <code>Equipo\HKEY_CURRENT_USER\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Compatibility Assistant\Store</code></p>
+            <p>Buscar nombres de cheats o .exe sospechosos.</p>
+
+            <h3>Funciones Desactivadas</h3>
+            <p>Ir a: <code>HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\UserAssist</code></p>
+            <p>Si existe "NotLog", ban por ocultar registros.</p>
+            <p>Ir a: <code>HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer</code></p>
+            <p>Si existe "NoRecentDocsHistory", ban por desactivar historial reciente.</p>
+        </div>
+
+        <div class="section" id="powershell">
+            <h2>PowerShell</h2>
+            <p>Abrir PowerShell como administrador y ejecutar:</p>
+            <pre>MMAgent</pre>
+            <p>Si “ApplicationLaunchPrefetching” o “MemoryCompressive” están en false, ban por “Modificaciones en SS”.</p>
+            <pre>gci -recurse -filter *.exe</pre>
+            <p>Lista todos los .exe en memoria comprimida. Buscar nombres raros o de cheats.</p>
+            <p>Opcional: <code>gci -recurse -filter *.cfg</code> para configs de cheats.</p>
+        </div>
+
+        <div class="section" id="processhacker">
+            <h2>ProcessHacker</h2>
+            <p>Ejecutar ProcessHacker como administrador:</p>
+            <h3>Servicio PCA</h3>
+            <p>Ejecutar: <code>Windows + R</code> y escribir <code>Services.msc</code></p>
+            <p>Buscar “Servicio Asistente para la compatibilidad de programas”. Si está “Detenido”, ban por “Modificaciones en SS”.</p>
+
+            <h3>Explorer.exe</h3>
+            <p>Doble clic en “Explorer.exe” > “General”. Si se reinició durante el freeze, ban por “Cheat founds in SS”.</p>
+            <p>Ir a “Memory” > Desmarcar “Hide free regions” > “Strings”:</p>
+            <ol>
+                <li>Escribir “4”, marcar “Image” y “Mapped”, OK.</li>
+                <li>Filter > “Contains (case-insensitive)” > Escribir <code>File://</code>.</li>
+                <li>Repetir con <code>.exe</code>.</li>
+                <li>Buscar archivos sospechosos.</li>
+            </ol>
+            <p>Buscar “Pcaclient” con los mismos filtros. Guardar “TRACE,0000” y revisar .exe recientes.</p>
+
+            <h3>Otros Procesos</h3>
+            <p>Revisar “csrss” o “dwm” con filtros <code>:\users</code> y <code>.exe</code>.</p>
+        </div>
+
+        <div class="section" id="dlls">
+            <h2>DLLs Sospechosos</h2>
+            <p>Buscar en cualquier proceso:</p>
+            <ul>
+                <li><code>ARTEX64.dll</code> (Injection clicker)</li>
+                <li><code>LSquad.dll</code> (String cleaner)</li>
+                <li><code>Kangaroo.dll</code> (Crack genérico)</li>
+                <li><code>DoNotAobScanMemory.dll</code> (Inyección de cheats)</li>
+            </ul>
+            <p>Si aparecen, ban por “Cheats founds in SS”.</p>
+        </div>
+
+        <div class="section" id="discord">
+            <h2>Discord</h2>
+            <p>En ProcessHacker, buscar “discord”:</p>
+            <ol>
+                <li>Memory > Desmarcar “Hide free regions” > Strings > “4”, “Image”, “Mapped”.</li>
+                <li>Filter > “Contains (case-insensitive)” > <code>cdn.discordapp.com</code>.</li>
+                <li>Repetir con <code>attachments</code>.</li>
+                <li>Buscar .exe, .dll o .jar descargados.</li>
+            </ol>
+        </div>
+
+        <div class="section" id="macros">
+            <h2>Macros</h2>
+            <h3>Razer Synapse</h3>
+            <p>Ir a: <code>C:\Users\NombrePC\AppData\Local\Razer</code></p>
+            <p>Revisar “logs” > “macros”. Si está modificado recientemente, ban por “Cheat found in SS”.</p>
+
+            <h3>Logitech</h3>
+            <p>Ir a: <code>C:\Users\%USERNAME%\AppData\Local\LGhub\accounts</code></p>
+            <p>Si “.settings” está modificado recientemente, ban.</p>
+
+            <h3>RedDragon</h3>
+            <p>Ir a: <code>C:\Users\NombrePC\AppData\Roaming\REDRAGON Gaming Mouse</code></p>
+            <p>Revisar “Profile”. Si los .proof están modificados antes de la SS, ban.</p>
+        </div>
+
+        <div class="section" id="linux">
+            <h2>Guía para Linux</h2>
+            <ol>
+                <li>Preguntar qué distribución usa (Ubuntu, Mint, etc.).</li>
+                <li>Descargar AnyDesk: <a href="https://anydesk.com/es/downloads/linux">Link</a>.</li>
+                <li>Ordenar carpetas por fecha de modificación.</li>
+                <li><code>Ctrl + H</code> > Revisar <code>.minecraft</code> (mods, logs, etc.).</li>
+                <li>Buscar autoclickers obvios en el buscador (AutoClicker, ApolloClicker, etc.).</li>
+                <li>Terminal: <code>history</code> para comandos recientes.</li>
+                <li>Filtrar: <code>history | grep .jar</code>, <code>history | grep clicker</code>, etc.</li>
+                <li><code>dpkg --get-selections</code> para programas instalados.</li>
+            </ol>
+        </div>
+
+        <div class="section" id="extras">
+            <h2>Extras</h2>
+            <h3>DLL Flags</h3>
+            <p>Ejecutar en CMD: <code>regsvr32 C:\Windows\System32\nombre.dll</code> o <code>regsvr32 C:\Users\User\Downloads\nombre.dll</code>.</p>
+
+            <h3>Anti Tamper</h3>
+            <p>Buscar “Anti Tamper” en Inicio y desactivarlo si está activado.</p>
+
+            <h3>SmartScreen</h3>
+            <p>Inicio > “Smartscreen” > “Control de aplicaciones y navegador” > Desactivar las primeras 2 opciones.</p>
+
+            <h3>DNS Cache</h3>
+            <p>PowerShell: <code>Get-DnsClientCache</code>. Revisar dominios recientes (ej. “Cucklord.pro”).</p>
+
+            <h3>C# Cheats</h3>
+            <p>En “dllhost”, buscar <code>DoNotAobScanMemory.dll</code>. Si aparece, ban por “Modificaciones en SS”.</p>
+
+            <h3>Programas Ilegales</h3>
+            <p>Iobit Unlocker, AutoHotKey, Macro Recorder, etc. Ban por “Modificaciones en SS”.</p>
+
+            <h3>Bloqueo de Funciones</h3>
+            <p>Errores al abrir ProcessHacker, Administrador de Tareas, etc., ban por “Modificaciones ilegales”.</p>
+        </div>
     </div>
     <footer>
         <p>Actualizado al 21 de febrero de 2025 | Creado por Kaspercito</p>
     </footer>
 
     <script>
-        // Configuración del canvas
-        const canvas = document.getElementById('contentCanvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = 960; // Ancho del contenedor
-        canvas.height = 2000; // Altura estimada, ajusta según contenido
+        // Contraseña predefinida (cámbiala por la que quieras)
+        const correctPassword = 'Oliver'; // Cambia esto por tu contraseña
 
-        // Cargar imágenes de Imgur
-        const images = [
-            { src: 'https://i.imgur.com/8jdIPL4.png', x: 50, y: 300, width: 400, height: 200 },
-            { src: 'https://i.imgur.com/sg1StVp.png', x: 50, y: 600, width: 400, height: 200 }
-        ];
-
-        // Dibujar contenido en el canvas
-        function drawContent() {
-            ctx.fillStyle = '#fff';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            // Títulos y texto
-            ctx.fillStyle = '#2c3e50';
-            ctx.font = 'bold 24px Arial';
-            ctx.fillText('Notas Iniciales', 50, 50);
-            ctx.font = '16px Arial';
-            ctx.fillStyle = '#333';
-            ctx.fillText('• Asegurarse de que la persona no esté grabando...', 50, 100);
-            ctx.fillText('• Abrir Administrador de Tareas...', 50, 130);
-            ctx.fillText('• Siempre grabar cada SS...', 50, 160);
-            ctx.fillText('• Usar una VPN...', 50, 190);
-
-            ctx.font = 'bold 24px Arial';
-            ctx.fillStyle = '#2c3e50';
-            ctx.fillText('Evitar Robo de IP', 50, 250);
-            ctx.font = '16px Arial';
-            ctx.fillStyle = '#333';
-            ctx.fillText('Aunque se sugiere usar VPN...', 50, 280);
-
-            // Cargar y dibujar imágenes
-            images.forEach(img => {
-                const image = new Image();
-                image.src = img.src;
-                image.onload = () => {
-                    ctx.drawImage(image, img.x, img.y, img.width, img.height);
-                };
-            });
-
-            // Agregar más texto (ajusta posiciones según necesites)
-            ctx.fillText('Métodos Generales', 50, 850);
-            ctx.fillText('Papelera de Reciclaje: Windows + R > C:\\$Recycle.Bin', 50, 880);
-            // Continúa con el resto del contenido...
-        }
-
-        // Máscara dinámica para dificultar capturas
-        function drawMask() {
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
-            for (let i = 0; i < 50; i++) {
-                const x = Math.random() * canvas.width;
-                const y = Math.random() * canvas.height;
-                ctx.fillRect(x, y, 50, 50); // Ruido aleatorio
+        // Función para verificar la contraseña
+        function checkPassword() {
+            const input = document.getElementById('passwordInput').value;
+            if (input === correctPassword) {
+                document.getElementById('passwordPrompt').style.display = 'none';
+                document.getElementById('content').style.display = 'block';
+            } else {
+                alert('Contraseña incorrecta. Intenta de nuevo.');
+                document.getElementById('passwordInput').value = '';
             }
         }
 
-        // Dibujar contenido inicial
-        drawContent();
-
-        // Actualizar máscara constantemente
-        setInterval(() => {
-            drawContent(); // Redibujar contenido
-            drawMask(); // Añadir máscara
-        }, 500); // Cada 0.5 segundos
-
-        // Bloquear eventos
-        document.addEventListener('copy', (e) => {
-            e.preventDefault();
-            alert('Copiar no está permitido.');
+        // Permitir Enter para enviar la contraseña
+        document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
         });
 
-        document.addEventListener('keydown', (e) => {
+        // Bloquear copiar, imprimir y detectar actividad sospechosa
+        document.addEventListener('copy', function(e) {
+            e.preventDefault();
+            alert('Copiar no está permitido.');
+            return false;
+        });
+
+        document.addEventListener('keydown', function(e) {
             if ((e.ctrlKey || e.metaKey) && e.key === 'c') {
                 e.preventDefault();
                 alert('Copiar no está permitido.');
@@ -196,19 +399,31 @@
             }
         });
 
-        document.addEventListener('contextmenu', (e) => {
+        document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
             alert('El clic derecho está deshabilitado.');
         });
 
-        document.addEventListener('visibilitychange', () => {
+        document.addEventListener('visibilitychange', function() {
             if (document.hidden) {
-                canvas.style.opacity = '0';
+                document.getElementById('content').style.display = 'none';
                 alert('No intentes capturar el contenido.');
                 setTimeout(() => {
-                    canvas.style.opacity = '1';
+                    if (document.getElementById('passwordPrompt').style.display === 'none') {
+                        document.getElementById('content').style.display = 'block';
+                    }
                 }, 1000);
             }
+        });
+
+        navigator.mediaDevices.ondevicechange = function() {
+            alert('Se detectó un intento de grabación. El contenido está protegido.');
+            document.getElementById('content').style.display = 'none';
+            setTimeout(() => {
+                if (document.getElementById('passwordPrompt').style.display === 'none') {
+                    document.getElementById('content').style.display = 'block';
+                }
+            }, 2000);
         });
 
         if (/Mobi|Android/i.test(navigator.userAgent)) {
