@@ -340,7 +340,7 @@
             <h3>Funciones Desactivadas</h3>
             <p>Ir a: <code>HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\UserAssist</code></p>
             <p>Si existe "NotLog", ban por ocultar registros.</p>
-            <img src="https://i.imgur.com/GgowqSK" alt="Funciones Desactivadas">
+            <img src="https://i.imgur.com/80Q06gk.png" alt="Funciones Desactivadas">
             <p>Ir a: <code>HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer</code></p>
             <p>Si existe "NoRecentDocsHistory", ban por desactivar historial reciente.</p>
             <img src="https://i.imgur.com/9aDPwkI.png" alt="Funciones Desactivadas">
@@ -350,8 +350,9 @@
             <h2>PowerShell</h2>
             <p>Abrir PowerShell como administrador y ejecutar:</p>
             <code>MMAgent</code>
-            <p>Si “ApplicationLaunchPrefetching” o “MemoryCompressive” están en false, ban por “Modificaciones en SS”.</p>
-            <code>gci -recurse -filter *.exe</code>
+            <img src="https://i.imgur.com/mQAu6xT.png" alt="PowerShell">
+            <p>Si “ApplicationLaunchPrefetching” o “MemoryCompressive” están en false, ban por ya que el usuario desactivo la memoria comprimida y no guardara logs/registros de .exe etc “esto se considerá”.</p>
+            <code>gci -recurse -filter *.exe</code> <p>También pueden hacer</p> <code>gci -recurse -filter *.cfg</code> para ver si no borraron las configs de los cheats) en powershell.</p>
             <p>Lista todos los .exe en memoria comprimida. Buscar nombres raros o de cheats.</p>
             <p>Opcional: <code>gci -recurse -filter *.cfg</code> para configs de cheats.</p>
         </div>
