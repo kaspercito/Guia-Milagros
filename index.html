@@ -173,6 +173,59 @@
             height: 100%;
             z-index: -1;
         }
+                /* Media Queries para móviles */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5em; /* Más pequeño en móviles */
+            }
+            nav {
+                padding: 5px;
+            }
+            nav a {
+                margin: 0 8px;
+                font-size: 0.85em;
+            }
+            .container {
+                margin: 5px;
+                padding: 10px;
+            }
+            h2 {
+                font-size: 1.3em;
+            }
+            h3 {
+                font-size: 1.1em;
+            }
+            pre, code {
+                font-size: 0.9em;
+            }
+            #passwordPrompt {
+                padding: 10px;
+                width: 85%;
+            }
+            #passwordPrompt input {
+                width: 90%;
+                padding: 6px;
+            }
+            #passwordPrompt button {
+                padding: 6px 12px;
+            }
+        }
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.2em;
+            }
+            nav a {
+                margin: 0 5px;
+                font-size: 0.8em;
+            }
+            .container {
+                padding: 8px;
+            }
+            footer {
+                padding: 10px;
+                font-size: 0.8em;
+            }
+        }
     </style>
 </head>
 <body oncontextmenu="return false;">
@@ -474,19 +527,22 @@
             });
         }
 
+        // Partículas de fondo (optimizado para móviles)
         const canvas = document.getElementById('particlesCanvas');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
+        const isMobile = window.innerWidth <= 768;
+        const particleCount = isMobile ? 30 : 50; // Menos partículas en móviles
         const particles = [];
-        for (let i = 0; i < 50; i++) {
+        for (let i = 0; i < particleCount; i++) {
             particles.push({
                 x: Math.random() * canvas.width,
                 y: Math.random() * canvas.height,
                 radius: Math.random() * 3 + 1,
-                speedX: (Math.random() - 0.5) * 2,
-                speedY: (Math.random() - 0.5) * 2
+                speedX: (Math.random() - 0.5) * (isMobile ? 1 : 2), // Velocidad reducida en móviles
+                speedY: (Math.random() - 0.5) * (isMobile ? 1 : 2)
             });
         }
 
