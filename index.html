@@ -367,12 +367,12 @@
             <p>Ejecutar: <code>Windows + R</code> y escribir <code>Services.msc</code></p>
             <p>Buscar “Servicio Asistente para la compatibilidad de programas”. Si está “Detenido”, ban por “Modificaciones en SS”.</p>
             <img src="https://i.imgur.com/UGw2406.png" alt="Servicio PCA">
-            <p>Si el proceso fue iniciado cuando fue frozeado, significa que reinicio el proceso, si hizo eso no habrá registro alguno de lo que usó recientemente (pcaclient, etc)</p>
             
             <h3>Explorer.exe</h3>
-            <p>Doble clic en “Explorer.exe” > “General”. Si se reinició durante el freeze, ban por “Modificaciones en SS”.</p>
+            <p>Doble clic en “Explorer.exe” > “General”.</p>
             <img src="https://i.imgur.com/vgh05O4.png" alt="Servicio PCA">
-            <p>De lo contrario seguiremos la ss, iremos a “Memory” > Desmarcar “Hide free regions” > “Strings”:</p>
+            <p>Si el proceso fue iniciado cuando fue frozeado, significa que reinicio el proceso, si hizo eso no habrá registro alguno de lo que usó recientemente (pcaclient, etc), Considerar Ban</p>
+            <p>Si no sé ha reiniciado seguiremos con la SS, iremos a “Memory” > Desmarcar “Hide free regions” > “Strings”:</p>
             <img src="https://i.imgur.com/JYviLk2.png" alt="Servicio PCA">
             <ol>
                 <li>Escribir <code>4</code>, marcar “Image” y “Mapped”.</li>
