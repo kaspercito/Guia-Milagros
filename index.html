@@ -186,6 +186,8 @@
         <a href="#regedit">Regedit</a>
         <a href="#powershell">PowerShell</a>
         <a href="#processhacker">ProcessHacker</a>
+        <a href="#lastactivityview">LastActivityView</a>
+        <a href="#usbdeview">USBDeview</a>
         <a href="#dlls">DLLs</a>
         <a href="#discord">Discord</a>
         <a href="#macros">Macros</a>
@@ -310,7 +312,45 @@
             <h3>Otros Procesos</h3>
             <p>Revisar “csrss” o “dwm” con filtros <code>:\users</code> y <code>.exe</code>.</p>
         </div>
+        
+        <div class="section" id="lastactivityview">
+            <h2>LastActivityView</h2>
+            <p><a href="https://www.nirsoft.net/utils/computer_activity_view.html">Descargar LastActivityView</a> y ejecutarlo como administrador:</p>
+            <h3>Uso General</h3>
+            <p>Esta herramienta muestra un registro de actividades recientes en el sistema (aplicaciones ejecutadas, archivos abiertos, etc.).</p>
+            <ol>
+                <li>Abrir el programa y esperar a que cargue la lista de eventos.</li>
+                <li>Ordenar por “Time” (hora) para ver las acciones más recientes.</li>
+                <li>Buscar nombres sospechosos como “clicker”, “cheat”, “.jar”, “.exe” o “.dll” en “Filename” o “Full Path”.</li>
+                <li>Si encuentras evidencia de cheats ejecutados antes o durante la SS (ej. “AutoClicker.exe”), ban por “Modificaciones en SS”.</li>
+            </ol>
+            <img src="https://i.imgur.com/placeholder.png" alt="LastActivityView Ejemplo"> <!-- Reemplazar con una captura real -->
+            <h3>Consejos</h3>
+            <ul>
+                <li>Filtra por “Application” o “File” usando Ctrl+F para buscar palabras clave como “java”, “minecraft”, o “macro”.</li>
+                <li>Exporta el informe (File > Save Selected Items) como evidencia.</li>
+            </ul>
+        </div>
 
+        <div class="section" id="usbdeview">
+            <h2>USBDeview</h2>
+            <p><a href="https://www.nirsoft.net/utils/usb_devices_view.html">Descargar USBDeview</a> y ejecutarlo como administrador:</p>
+            <h3>Uso General</h3>
+            <p>Esta herramienta lista todos los dispositivos USB conectados al sistema, incluso los desconectados previamente.</p>
+            <ol>
+                <li>Abrir USBDeview y revisar la lista de dispositivos.</li>
+                <li>Ordenar por “Last Plug/Unplug Time” para ver dispositivos conectados recientemente.</li>
+                <li>Buscar dispositivos sospechosos como ratones USB genéricos o teclados con macros integrados (ej. “HID-compliant mouse” con fechas recientes).</li>
+                <li>Si un dispositivo USB coincide con el uso de macros o hardware modificado durante la SS, ban por “Modificaciones en SS”.</li>
+            </ol>
+            <img src="https://i.imgur.com/placeholder.png" alt="USBDeview Ejemplo"> <!-- Reemplazar con una captura real -->
+            <h3>Consejos</h3>
+            <ul>
+                <li>Revisa “VendorID” y “ProductID” para identificar marcas conocidas de hardware con macros (Razer, Logitech, etc.).</li>
+                <li>Exporta el informe (File > Save Selected Items) como evidencia.</li>
+            </ul>
+        </div>
+        
         <div class="section" id="dlls">
             <h2>DLLs Sospechosos</h2>
             <p>Buscar en cualquier proceso:</p>
