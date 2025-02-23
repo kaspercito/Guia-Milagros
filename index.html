@@ -632,140 +632,145 @@
         <img id="lightboxImg">
     </div>
     
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const correctPassword = atob('T2xpdmVy'); // 'Oliver' en base64
-        const passwordPrompt = document.getElementById('passwordPrompt');
-        const content = document.getElementById('content');
-        const accessButton = document.getElementById('accessButton');
-        const passwordInput = document.getElementById('passwordInput');
-    
-        // Función para verificar la contraseña
-        function checkPassword() {
-            const input = passwordInput.value;
-            if (input === correctPassword) {
-                localStorage.setItem('accessGranted', 'true');
-                passwordPrompt.style.display = 'none';
-                content.style.display = 'block';
-            } else {
-                alert('Contraseña incorrecta. Intenta de nuevo.');
-                passwordInput.value = '';
-            }
-        }
-    
-        // Verificar si ya tiene acceso
-        if (localStorage.getItem('accessGranted') === 'true') {
+ <script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Elementos principales
+    const correctPassword = atob('T2xpdmVy'); // 'Oliver'
+    const passwordPrompt = document.getElementById('passwordPrompt');
+    const content = document.getElementById('content');
+    const accessButton = document.getElementById('accessButton');
+    const passwordInput = document.getElementById('passwordInput');
+
+    // Verificar existencia de elementos
+    if (!passwordPrompt || !content || !accessButton || !passwordInput) {
+        console.error('Falta un elemento en el DOM:', {
+            passwordPrompt, content, accessButton, passwordInput
+        });
+        return;
+    }
+
+    // Función para verificar la contraseña
+    function checkPassword() {
+        const input = passwordInput.value;
+        if (input === correctPassword) {
+            localStorage.setItem('accessGranted', 'true');
             passwordPrompt.style.display = 'none';
             content.style.display = 'block';
         } else {
-            passwordPrompt.style.display = 'block';
+            alert('Contraseña incorrecta. Intenta de nuevo.');
+            passwordInput.value = '';
         }
-    
-        // Verificar que los elementos existen
-        if (!accessButton) {
-            console.error('El botón "accessButton" no se encontró en el DOM.');
-            return;
-        }
-        if (!passwordInput) {
-            console.error('El input "passwordInput" no se encontró en el DOM.');
-            return;
-        }
-    
-        // Evento para el botón "Acceder"
-        accessButton.addEventListener('click', function() {
-            console.log('Botón "Acceder" clicado'); // Para depurar
+    }
+
+    // Controlar visibilidad inicial
+    if (localStorage.getItem('accessGranted') === 'true') {
+        passwordPrompt.style.display = 'none';
+        content.style.display = 'block';
+    } else {
+        passwordPrompt.style.display = 'block';
+        content.style.display = 'none'; // Asegurar que el contenido esté oculto
+    }
+
+    // Evento para el botón "Acceder"
+    accessButton.addEventListener('click', function() {
+        console.log('Botón "Acceder" clicado');
+        checkPassword();
+    });
+
+    // Evento para la tecla "Enter"
+    passwordInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            console.log('Tecla "Enter" presionada');
             checkPassword();
+        }
+    });
+
+    // --- Funcionalidades adicionales ---
+    // Partículas de fondo
+    const canvas = document.getElementById('particlesCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const isMobile = window.innerWidth <= 768;
+    const particleCount = isMobile ? 15 : 50;
+    const particles = [];
+    for (let i = 0; i < particleCount; i++) {
+        particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            radius: Math.random() * 3 + 1,
+            speedX: (Math.random() - 0.5) * (isMobile ? 1 : 2),
+            speedY: (Math.random() - 0.5) * (isMobile ? 1 : 2)
         });
-    
-        // Evento para la tecla "Enter"
-        passwordInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                console.log('Tecla "Enter" presionada'); // Para depurar
-                checkPassword();
-            }
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = 'rgba(255, 77, 77, 0.5)';
+        particles.forEach(p => {
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fill();
+            p.x += p.speedX;
+            p.y += p.speedY;
+            if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
+            if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
         });
+        requestAnimationFrame(animate);
+    }
+    if (!isMobile) animate();
 
-            // Partículas de fondo
-            const canvas = document.getElementById('particlesCanvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
 
-            const isMobile = window.innerWidth <= 768;
-            const particleCount = isMobile ? 15 : 50;
-            const particles = [];
-            for (let i = 0; i < particleCount; i++) {
-                particles.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    radius: Math.random() * 3 + 1,
-                    speedX: (Math.random() - 0.5) * (isMobile ? 1 : 2),
-                    speedY: (Math.random() - 0.5) * (isMobile ? 1 : 2)
-                });
-            }
-
-            function animate() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = 'rgba(255, 77, 77, 0.5)';
-                particles.forEach(p => {
-                    ctx.beginPath();
-                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                    ctx.fill();
-                    p.x += p.speedX;
-                    p.y += p.speedY;
-                    if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
-                    if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
-                });
-                requestAnimationFrame(animate);
-            }
-            if (!isMobile) animate();
-
-            window.addEventListener('resize', () => {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
+    // Barra de búsqueda
+    const searchBar = document.getElementById('searchBar');
+    if (searchBar) {
+        searchBar.addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            document.querySelectorAll('.section').forEach(section => {
+                const text = section.textContent.toLowerCase();
+                section.style.display = text.includes(searchTerm) ? 'block' : 'none';
             });
-
-            // Barra de búsqueda
-            document.getElementById('searchBar').addEventListener('input', function(e) {
-                const searchTerm = e.target.value.toLowerCase();
-                document.querySelectorAll('.section').forEach(section => {
-                    const text = section.textContent.toLowerCase();
-                    section.style.display = text.includes(searchTerm) ? 'block' : 'none';
-                });
-            });
-
-            // Botón "Volver arriba"
-            const scrollTopBtn = document.getElementById('scrollTop');
-            window.addEventListener('scroll', () => {
-                scrollTopBtn.style.display = window.scrollY > 200 ? 'block' : 'none';
-            });
-            scrollTopBtn.addEventListener('click', () => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            });
-
-            // Lightbox para imágenes
-            document.querySelectorAll('img').forEach(img => {
-                img.addEventListener('click', () => {
-                    const lightbox = document.getElementById('lightbox');
-                    const lightboxImg = document.getElementById('lightboxImg');
-                    lightboxImg.src = img.src;
-                    lightbox.style.display = 'block';
-                });
-            });
-            document.getElementById('lightbox').addEventListener('click', () => {
-                document.getElementById('lightbox').style.display = 'none';
-            });
-
-            // Detección de manipulaciones
-            setInterval(function() {
-                if (!document.oncontextmenu || !document.onkeydown || !document.oncopy) {
-                    alert('No intentes manipular la página.');
-                    window.location.reload();
-                }
-            }, 1000);
-
-            console.log('Página cargada, esperando entrada de contraseña');
         });
-    </script>
-</body>
+    }
+
+    // Botón "Volver arriba"
+    const scrollTopBtn = document.getElementById('scrollTop');
+    if (scrollTopBtn) {
+        window.addEventListener('scroll', () => {
+            scrollTopBtn.style.display = window.scrollY > 200 ? 'block' : 'none';
+        });
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+
+    // Lightbox para imágenes
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    if (lightbox && lightboxImg) {
+        document.querySelectorAll('img').forEach(img => {
+            img.addEventListener('click', () => {
+                lightboxImg.src = img.src;
+                lightbox.style.display = 'block';
+            });
+        });
+        lightbox.addEventListener('click', () => {
+            lightbox.style.display = 'none';
+        });
+    }
+
+    // Detección de manipulaciones
+    setInterval(function() {
+        if (!document.oncontextmenu || !document.onkeydown || !document.oncopy) {
+            alert('No intentes manipular la página.');
+            window.location.reload();
+        }
+    }, 1000);
+});
+</script></body>
 </html>
