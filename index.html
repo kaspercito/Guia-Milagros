@@ -75,9 +75,17 @@
             padding: 20px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);
         }
-        h1 {
+        header h1 {
             margin: 0;
             font-size: 2.5em;
+            font-family: 'Arial', sans-serif;
+            color: #ff4d4d;
+            text-shadow: 0 0 10px rgba(255, 77, 77, 0.5);
+            animation: fadeIn 1.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
         nav {
             background: #262626;
@@ -262,7 +270,7 @@
             margin-top: 5%;
         }
         @media (max-width: 768px) {
-            h1 { font-size: 1.5em; }
+            header h1 { font-size: 1.5em; }
             nav { padding: 5px; }
             nav a { margin: 0 8px; font-size: 0.85em; }
             #searchBar { width: 150px; }
@@ -275,7 +283,7 @@
             #passwordPrompt button { padding: 6px 12px; }
         }
         @media (max-width: 480px) {
-            h1 { font-size: 1.2em; }
+            header h1 { font-size: 1.2em; }
             nav a { margin: 0 5px; font-size: 0.8em; }
             .container { padding: 8px; }
             footer { padding: 10px; font-size: 0.8em; }
