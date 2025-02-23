@@ -633,43 +633,36 @@
     </div>
     
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const correctPassword = atob('T2xpdmVy'); // 'Oliver' en base64
-
-            function checkPassword() {
-                const input = document.getElementById('passwordInput').value;
-                console.log('Contraseña ingresada:', input);
-                if (input === correctPassword) {
-                    console.log('Contraseña correcta, mostrando contenido');
-                    localStorage.setItem('accessGranted', 'true');
-                    document.getElementById('passwordPrompt').style.display = 'none';
-                    document.getElementById('content').style.display = 'block';
-                } else {
-                    console.log('Contraseña incorrecta');
-                    alert('Contraseña incorrecta. Intenta de nuevo.');
-                    document.getElementById('passwordInput').value = '';
-                }
+    document.addEventListener('DOMContentLoaded', function() {
+        const correctPassword = atob('T2xpdmVy');
+        const passwordPrompt = document.getElementById('passwordPrompt');
+        const content = document.getElementById('content');
+        const accessButton = document.getElementById('accessButton');
+        const passwordInput = document.getElementById('passwordInput');
+    
+        function checkPassword() {
+            if (passwordInput.value === correctPassword) {
+                localStorage.setItem('accessGranted', 'true');
+                passwordPrompt.style.display = 'none';
+                content.style.display = 'block';
+            } else {
+                alert('Contraseña incorrecta. Intenta de nuevo.');
+                passwordInput.value = '';
             }
-
-            if (localStorage.getItem('accessGranted') === 'true') {
-                document.getElementById('passwordPrompt').style.display = 'none';
-                document.getElementById('content').style.display = 'block';
-            }
-
-            const accessButton = document.getElementById('accessButton');
-            if (accessButton) {
-                accessButton.addEventListener('click', checkPassword);
-            }
-
-            const passwordInput = document.getElementById('passwordInput');
-            if (passwordInput) {
-                passwordInput.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        console.log('Enter presionado');
-                        checkPassword();
-                    }
-                });
-            }
+        }
+    
+        if (localStorage.getItem('accessGranted') === 'true') {
+            passwordPrompt.style.display = 'none';
+            content.style.display = 'block';
+        } else {
+            passwordPrompt.style.display = 'block';
+        }
+    
+        accessButton.addEventListener('click', checkPassword);
+        passwordInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') checkPassword();
+        });
+    });
 
             // Partículas de fondo
             const canvas = document.getElementById('particlesCanvas');
