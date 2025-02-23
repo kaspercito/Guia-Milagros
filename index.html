@@ -625,7 +625,7 @@
     </div>
     
     <footer>
-        <p>Actualizado el 22/02/2025 23:52 P.M. | Creado por Kaspercito</p>
+        <p>Actualizado el 23/02/2025 1:34 A.M. | Creado por Kaspercito</p>
     </footer>
     <button id="scrollTop">↑</button>
     <div id="lightbox">
@@ -634,14 +634,16 @@
     
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const correctPassword = atob('T2xpdmVy');
+        const correctPassword = atob('T2xpdmVy'); // 'Oliver' en base64
         const passwordPrompt = document.getElementById('passwordPrompt');
         const content = document.getElementById('content');
         const accessButton = document.getElementById('accessButton');
         const passwordInput = document.getElementById('passwordInput');
     
+        // Función para verificar la contraseña
         function checkPassword() {
-            if (passwordInput.value === correctPassword) {
+            const input = passwordInput.value;
+            if (input === correctPassword) {
                 localStorage.setItem('accessGranted', 'true');
                 passwordPrompt.style.display = 'none';
                 content.style.display = 'block';
@@ -651,6 +653,7 @@
             }
         }
     
+        // Verificar si ya tiene acceso
         if (localStorage.getItem('accessGranted') === 'true') {
             passwordPrompt.style.display = 'none';
             content.style.display = 'block';
@@ -658,11 +661,29 @@
             passwordPrompt.style.display = 'block';
         }
     
-        accessButton.addEventListener('click', checkPassword);
-        passwordInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') checkPassword();
+        // Verificar que los elementos existen
+        if (!accessButton) {
+            console.error('El botón "accessButton" no se encontró en el DOM.');
+            return;
+        }
+        if (!passwordInput) {
+            console.error('El input "passwordInput" no se encontró en el DOM.');
+            return;
+        }
+    
+        // Evento para el botón "Acceder"
+        accessButton.addEventListener('click', function() {
+            console.log('Botón "Acceder" clicado'); // Para depurar
+            checkPassword();
         });
-    });
+    
+        // Evento para la tecla "Enter"
+        passwordInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                console.log('Tecla "Enter" presionada'); // Para depurar
+                checkPassword();
+            }
+        });
 
             // Partículas de fondo
             const canvas = document.getElementById('particlesCanvas');
