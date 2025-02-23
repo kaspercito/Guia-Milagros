@@ -47,6 +47,7 @@
         document.onkeydown = blockKeys;
         document.oncopy = checkCopy;
     </script>
+    
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -68,7 +69,7 @@
             user-select: text;
         }
         header {
-            background: #0d0d0d;
+            background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%);
             color: #fff;
             text-align: center;
             padding: 20px;
@@ -88,9 +89,20 @@
             text-decoration: none;
             margin: 0 15px;
             font-weight: bold;
+            transition: transform 0.2s ease, color 0.2s ease;
         }
         nav a:hover {
             color: #ff4d4d;
+            transform: scale(1.1);
+        }
+        #searchBar {
+            padding: 5px;
+            margin: 10px;
+            background: #404040;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            width: 200px;
         }
         .container {
             max-width: 1000px;
@@ -102,6 +114,10 @@
             position: relative;
             z-index: 1;
             display: none;
+            transition: box-shadow 0.3s ease;
+        }
+        .container:hover {
+            box-shadow: 0 0 25px rgba(255, 77, 77, 0.5);
         }
         .section {
             margin-bottom: 30px;
@@ -140,6 +156,7 @@
             border-radius: 5px;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
             border: 1px solid #404040;
+            cursor: pointer;
         }
         footer {
             text-align: center;
@@ -198,9 +215,11 @@
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            transition: transform 0.2s ease;
         }
         #passwordPrompt button:hover {
             background: #cc0000;
+            transform: scale(1.05);
         }
         #particlesCanvas {
             position: fixed;
@@ -210,10 +229,43 @@
             height: 100%;
             z-index: -1;
         }
+        #scrollTop {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px;
+            background: #ff4d4d;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: none;
+            transition: background 0.2s ease;
+        }
+        #scrollTop:hover {
+            background: #cc0000;
+        }
+        #lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10001;
+            text-align: center;
+        }
+        #lightboxImg {
+            max-width: 90%;
+            max-height: 90%;
+            margin-top: 5%;
+        }
         @media (max-width: 768px) {
             h1 { font-size: 1.5em; }
             nav { padding: 5px; }
             nav a { margin: 0 8px; font-size: 0.85em; }
+            #searchBar { width: 150px; }
             .container { margin: 5px; padding: 10px; }
             h2 { font-size: 1.3em; }
             h3 { font-size: 1.1em; }
@@ -245,6 +297,7 @@
         <h1>Guía Completa de Screenshare</h1>
     </header>
     <nav>
+        <input type="text" id="searchBar" placeholder="Buscar en la guía...">
         <a href="#notas">Notas</a>
         <a href="#ip">Evitar Robo de IP</a>
         <a href="#metodos">Métodos Generales</a>
@@ -259,6 +312,7 @@
         <a href="#linux">Linux</a>
         <a href="#extras">Extras</a>
     </nav>
+
     <div class="container" id="content">
         <div class="section" id="notas">
             <h2>Notas Iniciales</h2>
@@ -533,7 +587,11 @@
     <footer>
         <p>Actualizado el 22/02/2025 22:18 P.M. | Creado por Kaspercito</p>
     </footer>
-
+    <button id="scrollTop">↑</button>
+    <div id="lightbox">
+        <img id="lightboxImg">
+    </div>
+    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const correctPassword = atob('T2xpdmVy'); // 'Oliver' en base64
@@ -573,7 +631,7 @@
                 });
             }
 
-            // Partículas de fondo (optimizado para móviles)
+            // Partículas de fondo
             const canvas = document.getElementById('particlesCanvas');
             const ctx = canvas.getContext('2d');
             canvas.width = window.innerWidth;
@@ -611,6 +669,37 @@
             window.addEventListener('resize', () => {
                 canvas.width = window.innerWidth;
                 canvas.height = window.innerHeight;
+            });
+
+            // Barra de búsqueda
+            document.getElementById('searchBar').addEventListener('input', function(e) {
+                const searchTerm = e.target.value.toLowerCase();
+                document.querySelectorAll('.section').forEach(section => {
+                    const text = section.textContent.toLowerCase();
+                    section.style.display = text.includes(searchTerm) ? 'block' : 'none';
+                });
+            });
+
+            // Botón "Volver arriba"
+            const scrollTopBtn = document.getElementById('scrollTop');
+            window.addEventListener('scroll', () => {
+                scrollTopBtn.style.display = window.scrollY > 200 ? 'block' : 'none';
+            });
+            scrollTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // Lightbox para imágenes
+            document.querySelectorAll('img').forEach(img => {
+                img.addEventListener('click', () => {
+                    const lightbox = document.getElementById('lightbox');
+                    const lightboxImg = document.getElementById('lightboxImg');
+                    lightboxImg.src = img.src;
+                    lightbox.style.display = 'block';
+                });
+            });
+            document.getElementById('lightbox').addEventListener('click', () => {
+                document.getElementById('lightbox').style.display = 'none';
             });
 
             // Detección de manipulaciones
