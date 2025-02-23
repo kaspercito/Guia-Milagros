@@ -546,15 +546,21 @@
             <p>Esta herramienta lista todos los dispositivos USB conectados al sistema, incluso los desconectados previamente.</p>
             <ol>
                 <li>Abrir USBDeview y revisar la lista de dispositivos.</li>
-                <li>Ordenar por “Last Plug/Unplug Time” para ver dispositivos conectados recientemente.</li>
+                <img src="https://i.imgur.com/x9IkAM2.png" alt="USBDeview">
+                <li>Revisamos el apartado “Registry Time 1” para ver dispositivos conectados recientemente.</li>
+                <img src="https://i.imgur.com/3UZTOOz.png" alt="USBDeview">
+                <li>Si nos fijamos por “Registry Time 2” también es un apartado, pero este nos mostrará en la fecha que se conecto por 1 primera vez un dispositivo, por ejemplo.</li>
+                <img src="https://i.imgur.com/UzzLIqn.png" alt="USBDeview">
+                <li>en la imagen observamos 3 USB OPTICAL MOUSE, pero esos 3 son 1 mouse, si nos fijamos donde dice USB Composite Device ese nos mostrará en la parte de Registry time 2, la primera vez que se conecto el USB del mouse.</li>
+                <img src="https://i.imgur.com/OagNuq4.png" alt="USBDeview">
                 <li>Buscar dispositivos sospechosos como ratones USB genéricos o teclados con macros integrados (ej. “HID-compliant mouse” con fechas recientes).</li>
-                <li>Si un dispositivo USB coincide con el uso de macros o hardware modificado durante la SS, ban por “Modificaciones en SS”.</li>
+                <img src="https://i.imgur.com/PBCjq0A.png" alt="USBDeview">
+                <li>Si un dispositivo USB coincide con la hora de conexión/desconexión al empezar la SS o minutos antes de estar en su anydesk esto ya sería sancionable por intentar esconder un mouse con macros.</li>
             </ol>
-            <img src="https://i.imgur.com/placeholder.png" alt="USBDeview Ejemplo"> <!-- Reemplazar con una captura real -->
+            
             <h3>Consejos</h3>
             <ul>
                 <li>Revisa “VendorID” y “ProductID” para identificar marcas conocidas de hardware con macros (Razer, Logitech, etc.).</li>
-                <li>Exporta el informe (File > Save Selected Items) como evidencia.</li>
             </ul>
         </div>
         
@@ -635,7 +641,7 @@
     </div>
     
     <footer>
-        <p>Actualizado el 23/02/2025 15:29 A.M. | Creado por Kaspercito</p>
+        <p>Actualizado el 23/02/2025 16:23 A.M. | Creado por Kaspercito</p>
     </footer>
     <button id="scrollTop">↑</button>
     <div id="lightbox">
