@@ -214,8 +214,8 @@
                 display: none !important;
             }
         }
-        #passwordPrompt {
-            display: block; /* Visible por defecto */
+                #passwordPrompt {
+            display: block;
             position: fixed;
             top: 50%;
             left: 50%;
@@ -230,7 +230,6 @@
             border: 1px solid #ff4d4d;
             width: 90%;
             max-width: 300px;
-            box-sizing: border-box;
         }
         #passwordPrompt h2 {
             color: #ff4d4d;
@@ -244,7 +243,6 @@
             border-radius: 4px;
             background: #404040;
             color: #fff;
-            box-sizing: border-box;
         }
         #passwordPrompt button {
             padding: 10px 20px;
@@ -253,13 +251,6 @@
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            transition: transform 0.2s ease;
-            width: 100%;
-            box-sizing: border-box;
-        }
-        #passwordPrompt button:hover {
-            background: #cc0000;
-            transform: scale(1.05);
         }
         #particlesCanvas {
             position: fixed;
@@ -646,121 +637,124 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const correctPassword = atob('T2xpdmVy'); // 'Oliver' en base64
+        // Forzar visibilidad inicial
+        const passwordPrompt = document.getElementById('passwordPrompt');
+        passwordPrompt.style.display = 'block';
 
-            function checkPassword() {
+        const correctPassword = atob('T2xpdmVy'); // 'Oliver'
+
+        // Revisar localStorage solo si no queremos forzar el prompt
+        if (localStorage.getItem('accessGranted') === 'true') {
+            passwordPrompt.style.display = 'none';
+            document.getElementById('content').style.display = 'block';
+        }
+
+        const accessButton = document.getElementById('accessButton');
+        if (accessButton) {
+            accessButton.addEventListener('click', function() {
                 const input = document.getElementById('passwordInput').value;
-                console.log('Contraseña ingresada:', input);
                 if (input === correctPassword) {
-                    console.log('Contraseña correcta, mostrando contenido');
                     localStorage.setItem('accessGranted', 'true');
-                    document.getElementById('passwordPrompt').style.display = 'none';
+                    passwordPrompt.style.display = 'none';
                     document.getElementById('content').style.display = 'block';
                 } else {
-                    console.log('Contraseña incorrecta');
                     alert('Contraseña incorrecta. Intenta de nuevo.');
                     document.getElementById('passwordInput').value = '';
                 }
-            }
+            });
+        }
 
-            if (localStorage.getItem('accessGranted') === 'true') {
-                document.getElementById('passwordPrompt').style.display = 'none';
-                document.getElementById('content').style.display = 'block';
-            }
-
-            const accessButton = document.getElementById('accessButton');
-            if (accessButton) {
-                accessButton.addEventListener('click', checkPassword);
-            }
-
-            const passwordInput = document.getElementById('passwordInput');
-            if (passwordInput) {
-                passwordInput.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        console.log('Enter presionado');
-                        checkPassword();
+        const passwordInput = document.getElementById('passwordInput');
+        if (passwordInput) {
+            passwordInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    const input = passwordInput.value;
+                    if (input === correctPassword) {
+                        localStorage.setItem('accessGranted', 'true');
+                        passwordPrompt.style.display = 'none';
+                        document.getElementById('content').style.display = 'block';
+                    } else {
+                        alert('Contraseña incorrecta. Intenta de nuevo.');
+                        passwordInput.value = '';
                     }
-                });
-            }
+                }
+            });
+        }
 
-            // Partículas de fondo
-            const canvas = document.getElementById('particlesCanvas');
-            const ctx = canvas.getContext('2d');
+        // Resto del código (partículas, búsqueda, etc.) sigue aquí...
+        const canvas = document.getElementById('particlesCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const isMobile = window.innerWidth <= 768;
+        const particleCount = isMobile ? 15 : 50;
+        const particles = [];
+        for (let i = 0; i < particleCount; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 3 + 1,
+                speedX: (Math.random() - 0.5) * (isMobile ? 1 : 2),
+                speedY: (Math.random() - 0.5) * (isMobile ? 1 : 2)
+            });
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'rgba(255, 77, 77, 0.5)';
+            particles.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fill();
+                p.x += p.speedX;
+                p.y += p.speedY;
+                if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
+            });
+            requestAnimationFrame(animate);
+        }
+        if (!isMobile) animate();
+
+        window.addEventListener('resize', () => {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
+        });
 
-            const isMobile = window.innerWidth <= 768;
-            const particleCount = isMobile ? 15 : 50;
-            const particles = [];
-            for (let i = 0; i < particleCount; i++) {
-                particles.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    radius: Math.random() * 3 + 1,
-                    speedX: (Math.random() - 0.5) * (isMobile ? 1 : 2),
-                    speedY: (Math.random() - 0.5) * (isMobile ? 1 : 2)
-                });
+        document.getElementById('searchBar').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            document.querySelectorAll('.section').forEach(section => {
+                const text = section.textContent.toLowerCase();
+                section.style.display = text.includes(searchTerm) ? 'block' : 'none';
+            });
+        });
+
+        const scrollTopBtn = document.getElementById('scrollTop');
+        window.addEventListener('scroll', () => {
+            scrollTopBtn.style.display = window.scrollY > 200 ? 'block' : 'none';
+        });
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        document.querySelectorAll('img').forEach(img => {
+            img.addEventListener('click', () => {
+                const lightbox = document.getElementById('lightbox');
+                const lightboxImg = document.getElementById('lightboxImg');
+                lightboxImg.src = img.src;
+                lightbox.style.display = 'block';
+            });
+        });
+        document.getElementById('lightbox').addEventListener('click', () => {
+            document.getElementById('lightbox').style.display = 'none';
+        });
+
+        setInterval(function() {
+            if (!document.oncontextmenu || !document.onkeydown || !document.oncopy) {
+                alert('No intentes manipular la página.');
+                window.location.reload();
             }
-
-            function animate() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = 'rgba(255, 77, 77, 0.5)';
-                particles.forEach(p => {
-                    ctx.beginPath();
-                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                    ctx.fill();
-                    p.x += p.speedX;
-                    p.y += p.speedY;
-                    if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
-                    if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
-                });
-                requestAnimationFrame(animate);
-            }
-            if (!isMobile) animate();
-
-            window.addEventListener('resize', () => {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-            });
-
-            // Barra de búsqueda
-            document.getElementById('searchBar').addEventListener('input', function(e) {
-                const searchTerm = e.target.value.toLowerCase();
-                document.querySelectorAll('.section').forEach(section => {
-                    const text = section.textContent.toLowerCase();
-                    section.style.display = text.includes(searchTerm) ? 'block' : 'none';
-                });
-            });
-
-            // Botón "Volver arriba"
-            const scrollTopBtn = document.getElementById('scrollTop');
-            window.addEventListener('scroll', () => {
-                scrollTopBtn.style.display = window.scrollY > 200 ? 'block' : 'none';
-            });
-            scrollTopBtn.addEventListener('click', () => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            });
-
-            // Lightbox para imágenes
-            document.querySelectorAll('img').forEach(img => {
-                img.addEventListener('click', () => {
-                    const lightbox = document.getElementById('lightbox');
-                    const lightboxImg = document.getElementById('lightboxImg');
-                    lightboxImg.src = img.src;
-                    lightbox.style.display = 'block';
-                });
-            });
-            document.getElementById('lightbox').addEventListener('click', () => {
-                document.getElementById('lightbox').style.display = 'none';
-            });
-
-            // Detección de manipulaciones
-            setInterval(function() {
-                if (!document.oncontextmenu || !document.onkeydown || !document.oncopy) {
-                    alert('No intentes manipular la página.');
-                    window.location.reload();
-                }
-            }, 1000);
+        }, 1000);
 
             console.log('Página cargada, esperando entrada de contraseña');
         });
