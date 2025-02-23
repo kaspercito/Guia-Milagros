@@ -481,27 +481,24 @@
             <img src="https://i.imgur.com/3xzEoNE.png" alt="Resultado sc query dps"> <!-- Reemplaza con una captura real -->
             
             <h3>Revisión en ProcessHacker</h3>
-            <p>Ejecutar ProcessHacker como administrador, buscar el proceso "DPS":</p>
-            <li>Doble clic en "DPS" > pestaña "General".</li>
-            <img src="https://i.imgur.com/JSIyKRV.png" alt="Propiedades DPS en ProcessHacker"> <!-- Imagen de ejemplo; ajusta según necesites -->
-            <li>Verificar la hora de inicio ("Start time"). Si coincide con el momento en que el usuario fue congelado (frozeado), considerar ban.</li>
+            <p>Ejecutar ProcessHacker como administrador, buscar el proceso "svchost.exe":</p>
+            <li>Doble clic en "svchost.exe" > pestaña "General".</li>
+            <img src="https://i.imgur.com/QLIqcM0.png" alt="Propiedades DPS en ProcessHacker"> <!-- Imagen de ejemplo; ajusta según necesites -->
+            <li>Verificar la hora de inicio ("Started"). Si coincide con el momento en que el usuario fue congelado (frozeado), considerar ban.</li>
+            <img src="https://i.imgur.com/hlWyYoq.png" alt="Hora inicio DPS en ProcessHacker">
             
             <h3>Análisis de Memoria en DPS</h3>
-            <p>En ProcessHacker, analizar el proceso "DPS" para buscar .exe modificados:</p>
+            <p>En ProcessHacker, analizar el proceso "svchost.exe" para buscar .exe modificados:</p>
             <ol>
+                <li>Identificar el proceso que usa más MB en ProcessHacker (ordenar por "Private Bytes") y repetir el análisis anterior:</li>
                 <li>Ir a "Memory" > Desmarcar "Hide free regions" > "Strings".</li>
                 <li>Configurar: Escribir <code>4</code>, marcar "Image" y "Mapped", luego "OK".</li>
-                <li>Filtrar con: <code>.exe</code>.</li>
-                <img src="https://i.imgur.com/pAOcbgL.png" alt="Strings en DPS"> <!-- Imagen de ejemplo -->
-                <li>Revisar los resultados. Si aparecen .exe sospechosos o rutas repetidas (archivos reemplazados), ban por "Modificaciones en SS".</li>
+                <li>Filtrar con "Contains (case-insensitive): <code>.exe</code>.</li>
+                <li>Revisar los resultados. Si aparecen .exe sospechosos o rutas repetidas (archivos reemplazados), considerar ban.</li>
+                <img src="https://i.imgur.com/Z4O2pZk.gif" alt="Verificación">
             </ol>
             <p>Nota: Los archivos reemplazados aparecerán varias veces en la lista, lo que indica posible manipulación.</p>
-            
-            <h3>Proceso con Más Memoria</h3>
-            <p>Identificar el proceso que usa más MB en ProcessHacker (ordenar por "Private Bytes") y repetir el análisis anterior:</p>
-            <li>Filtrar con <code>.exe</code> en "Strings".</li>
-            <li>Buscar .exe modificados o sospechosos recientemente.</li>
-        </div>
+
         
             <div class="section" id="executedprogramslist">
             <h2>ExecutedProgramList</h2>
@@ -740,7 +737,7 @@
     </div>
     
     <footer>
-        <p>Actualizado el 23/02/2025 17:29 A.M. | Creado por Kaspercito</p>
+        <p>Actualizado el 23/02/2025 20:08 P.M. | Creado por Kaspercito</p>
     </footer>
     <button id="scrollTop">↑</button>
     <div id="lightbox">
