@@ -228,6 +228,7 @@
         text-align: center;
         color: #e0e0e0;
         border: 1px solid #ff4d4d;
+        display: block; /* Por defecto visible */
     }
     #passwordPrompt h2 {
         color: #ff4d4d;
@@ -651,14 +652,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Función para verificar la contraseña
     function checkPassword() {
-        const input = passwordInput.value;
+        const input = passwordInput.value.trim(); // Limpiar espacios
         if (input === correctPassword) {
             localStorage.setItem('accessGranted', 'true');
             passwordPrompt.style.display = 'none';
             content.style.display = 'block';
+            console.log('Acceso concedido');
         } else {
             alert('Contraseña incorrecta. Intenta de nuevo.');
             passwordInput.value = '';
+            passwordInput.focus();
         }
     }
 
@@ -668,22 +671,24 @@ document.addEventListener('DOMContentLoaded', function() {
         content.style.display = 'block';
     } else {
         passwordPrompt.style.display = 'block';
-        content.style.display = 'none'; // Asegurar que el contenido esté oculto
+        content.style.display = 'none';
     }
 
     // Evento para el botón "Acceder"
-    accessButton.addEventListener('click', function() {
-        console.log('Botón "Acceder" clicado');
-        checkPassword();
-    });
+    accessButton.addEventListener('click', checkPassword);
 
     // Evento para la tecla "Enter"
     passwordInput.addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
-            console.log('Tecla "Enter" presionada');
             checkPassword();
         }
     });
+
+    // Opcional: Forzar enfoque en el input al cargar
+    if (passwordPrompt.style.display === 'block') {
+        passwordInput.focus();
+    }
+});
 
     // --- Funcionalidades adicionales ---
     // Partículas de fondo
