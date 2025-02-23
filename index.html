@@ -5,40 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Guía SS Milagros</title>
     <link rel="icon" href="arefy.png" type="image/png">
-        <!-- Google tag (gtag.js) -->
+    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-724N3MWGF2"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-    
       gtag('config', 'G-724N3MWGF2');
     </script>
-    
+    <!-- Script inline para bloquear acciones y definir funciones -->
     <script>
-        document.oncontextmenu = function() { alert('El clic derecho está deshabilitado.'); return false; };
-        document.onkeydown = function(e) {
-            if ((e.ctrlKey || e.metaKey) && ['c', 'p', 's'].includes(e.key.toLowerCase())) {
-                var sel = window.getSelection();
-                var el = sel.anchorNode ? sel.anchorNode.parentElement : null;
-                if (e.key.toLowerCase() === 'c' && el && (el.tagName === 'CODE' || el.tagName === 'A')) return true;
-                alert('Acción no permitida.');
-                return false;
+        // Funciones inline disponibles desde el inicio
+        function blockKeys(e) {
+            var sel = window.getSelection();
+            var el = sel.anchorNode ? sel.anchorNode.parentElement : null;
+            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'c') {
+                if (el && (el.tagName === 'CODE' || el.tagName === 'A')) return true;
+                alert('Copiar no está permitido, excepto para rutas, comandos y enlaces.');
+                e.preventDefault();
+            }
+            if ((e.ctrlKey || e.metaKey) && ['p', 's'].includes(e.key.toLowerCase())) {
+                alert('Imprimir o guardar no está permitido.');
+                e.preventDefault();
             }
             if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I')) {
                 alert('Inspeccionar el código no está permitido.');
-                return false;
+                e.preventDefault();
             }
-        };
-        document.oncopy = function(e) {
+        }
+
+        function checkCopy(e) {
             var sel = window.getSelection();
             var el = sel.anchorNode ? sel.anchorNode.parentElement : null;
             if (el && (el.tagName === 'CODE' || el.tagName === 'A')) return true;
             alert('Copiar no está permitido, excepto para rutas, comandos y enlaces.');
             e.preventDefault();
-        };
+        }
+
+        // Bloqueo inicial
+        document.oncontextmenu = function() { alert('El clic derecho está deshabilitado.'); return false; };
+        document.onkeydown = blockKeys;
+        document.oncopy = checkCopy;
     </script>
-    
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -57,7 +65,7 @@
             -webkit-user-select: text;
             -moz-user-select: text;
             -ms-user-select: text;
-            user-select: text; /* Permite seleccionar texto en <code> y <a> */
+            user-select: text;
         }
         header {
             background: #0d0d0d;
@@ -162,21 +170,25 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: #1a1a1a;
+            background: #2b2b2b;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
             z-index: 10000;
             text-align: center;
             color: #e0e0e0;
+            border: 1px solid #ff4d4d;
+        }
+        #passwordPrompt h2 {
+            color: #ff4d4d;
         }
         #passwordPrompt input {
             padding: 10px;
             margin: 10px 0;
             width: 80%;
-            border: 1px solid #404040;
+            border: 1px solid #ff4d4d;
             border-radius: 4px;
-            background: #333333;
+            background: #404040;
             color: #fff;
         }
         #passwordPrompt button {
@@ -198,58 +210,23 @@
             height: 100%;
             z-index: -1;
         }
-                /* Media Queries para móviles */
         @media (max-width: 768px) {
-            h1 {
-                font-size: 1.5em; /* Más pequeño en móviles */
-            }
-            nav {
-                padding: 5px;
-            }
-            nav a {
-                margin: 0 8px;
-                font-size: 0.85em;
-            }
-            .container {
-                margin: 5px;
-                padding: 10px;
-            }
-            h2 {
-                font-size: 1.3em;
-            }
-            h3 {
-                font-size: 1.1em;
-            }
-            pre, code {
-                font-size: 0.9em;
-            }
-            #passwordPrompt {
-                padding: 10px;
-                width: 85%;
-            }
-            #passwordPrompt input {
-                width: 90%;
-                padding: 6px;
-            }
-            #passwordPrompt button {
-                padding: 6px 12px;
-            }
+            h1 { font-size: 1.5em; }
+            nav { padding: 5px; }
+            nav a { margin: 0 8px; font-size: 0.85em; }
+            .container { margin: 5px; padding: 10px; }
+            h2 { font-size: 1.3em; }
+            h3 { font-size: 1.1em; }
+            pre, code { font-size: 0.75em; word-break: break-word; }
+            #passwordPrompt { padding: 10px; width: 85%; }
+            #passwordPrompt input { width: 90%; padding: 6px; }
+            #passwordPrompt button { padding: 6px 12px; }
         }
         @media (max-width: 480px) {
-            h1 {
-                font-size: 1.2em;
-            }
-            nav a {
-                margin: 0 5px;
-                font-size: 0.8em;
-            }
-            .container {
-                padding: 8px;
-            }
-            footer {
-                padding: 10px;
-                font-size: 0.8em;
-            }
+            h1 { font-size: 1.2em; }
+            nav a { margin: 0 5px; font-size: 0.8em; }
+            .container { padding: 8px; }
+            footer { padding: 10px; font-size: 0.8em; }
         }
     </style>
 </head>
@@ -554,109 +531,10 @@
     </div>
     
     <footer>
-        <p>Actualizado el 22/02/2025 21:42 P.M. | Creado por Kaspercito</p>
+        <p>Actualizado el 22/02/2025 22:18 P.M. | Creado por Kaspercito</p>
     </footer>
 
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const correctPassword = 'Oliver';
-
-        function checkPassword() {
-            const input = document.getElementById('passwordInput').value;
-            console.log('Contraseña ingresada:', input);
-            if (input === correctPassword) {
-                console.log('Contraseña correcta, mostrando contenido');
-                document.getElementById('passwordPrompt').style.display = 'none';
-                document.getElementById('content').style.display = 'block';
-            } else {
-                console.log('Contraseña incorrecta');
-                alert('Contraseña incorrecta. Intenta de nuevo.');
-                document.getElementById('passwordInput').value = '';
-            }
-        }
-
-        const accessButton = document.getElementById('accessButton');
-        if (accessButton) {
-            accessButton.addEventListener('click', checkPassword);
-        }
-
-        const passwordInput = document.getElementById('passwordInput');
-        if (passwordInput) {
-            passwordInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    console.log('Enter presionado');
-                    checkPassword();
-                }
-            });
-        }
-
-        // Partículas de fondo (optimizado para móviles)
-        const canvas = document.getElementById('particlesCanvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        const isMobile = window.innerWidth <= 768;
-        const particleCount = isMobile ? 30 : 50; // Menos partículas en móviles
-        const particles = [];
-        for (let i = 0; i < particleCount; i++) {
-            particles.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                radius: Math.random() * 3 + 1,
-                speedX: (Math.random() - 0.5) * (isMobile ? 1 : 2), // Velocidad reducida en móviles
-                speedY: (Math.random() - 0.5) * (isMobile ? 1 : 2)
-            });
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = 'rgba(255, 77, 77, 0.5)';
-            particles.forEach(p => {
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                ctx.fill();
-                p.x += p.speedX;
-                p.y += p.speedY;
-                if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
-                if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
-            });
-            requestAnimationFrame(animate);
-        }
-        animate();
-
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        });
-
-        // Funciones inline para eventos en <body>
-        function blockKeys(e) {
-            var sel = window.getSelection();
-            var el = sel.anchorNode ? sel.anchorNode.parentElement : null;
-            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'c') {
-                if (el && (el.tagName === 'CODE' || el.tagName === 'A')) return true;
-                alert('Copiar no está permitido, excepto para rutas, comandos y enlaces.');
-                e.preventDefault();
-            }
-            if ((e.ctrlKey || e.metaKey) && ['p', 's'].includes(e.key.toLowerCase())) {
-                alert('Imprimir o guardar no está permitido.');
-                e.preventDefault();
-            }
-            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I')) {
-                alert('Inspeccionar el código no está permitido.');
-                e.preventDefault();
-            }
-        }
-
-        function checkCopy(e) {
-            var sel = window.getSelection();
-            var el = sel.anchorNode ? sel.anchorNode.parentElement : null;
-            if (el && (el.tagName === 'CODE' || el.tagName === 'A')) return true;
-            alert('Copiar no está permitido, excepto para rutas, comandos y enlaces.');
-            e.preventDefault();
-        }
-
         document.addEventListener('DOMContentLoaded', function() {
             const correctPassword = atob('T2xpdmVy'); // 'Oliver' en base64
 
@@ -702,7 +580,7 @@
             canvas.height = window.innerHeight;
 
             const isMobile = window.innerWidth <= 768;
-            const particleCount = isMobile ? 15 : 50; // Reducido en móviles
+            const particleCount = isMobile ? 15 : 50;
             const particles = [];
             for (let i = 0; i < particleCount; i++) {
                 particles.push({
@@ -728,7 +606,7 @@
                 });
                 requestAnimationFrame(animate);
             }
-            if (!isMobile) animate(); // Solo en escritorio
+            if (!isMobile) animate();
 
             window.addEventListener('resize', () => {
                 canvas.width = window.innerWidth;
@@ -743,8 +621,8 @@
                 }
             }, 1000);
 
-        console.log('Página cargada, esperando entrada de contraseña');
-    });
+            console.log('Página cargada, esperando entrada de contraseña');
+        });
     </script>
 </body>
 </html>
