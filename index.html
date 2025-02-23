@@ -624,7 +624,7 @@
     </div>
     
     <footer>
-        <p>Actualizado el 23/02/2025 2:05 A.M. | Creado por Kaspercito</p>
+        <p>Actualizado el 23/02/2025 2:12 A.M. | Creado por Kaspercito</p>
     </footer>
     <button id="scrollTop">↑</button>
     <div id="lightbox">
@@ -650,7 +650,6 @@
         function checkPassword() {
             const input = passwordInput.value.trim();
             if (input === correctPassword) {
-                localStorage.setItem('accessGranted', 'true');
                 passwordPrompt.style.display = 'none';
                 content.style.display = 'block';
                 console.log('Acceso concedido');
@@ -661,20 +660,13 @@
             }
         }
 
-        // Controlar visibilidad inicial
-        const hasAccess = localStorage.getItem('accessGranted') === 'true';
-        passwordPrompt.style.display = hasAccess ? 'none' : 'block';
-        content.style.display = hasAccess ? 'block' : 'none';
-
-        // Si no tiene acceso, enfocar el input
-        if (!hasAccess) {
-            passwordInput.focus();
-        }
+        // Mostrar siempre el cuadro de contraseña al cargar la página
+        passwordPrompt.style.display = 'block';
+        content.style.display = 'none';
+        passwordInput.focus(); // Enfocar el input al cargar
 
         // Evento para el botón "Acceder"
-        accessButton.addEventListener('click', function() {
-            checkPassword();
-        });
+        accessButton.addEventListener('click', checkPassword);
 
         // Evento para la tecla "Enter"
         passwordInput.addEventListener('keypress', function(e) {
@@ -760,14 +752,6 @@
                 lightbox.style.display = 'none';
             });
         }
-
-        // Detección de manipulaciones
-        setInterval(function() {
-            if (!document.oncontextmenu || !document.onkeydown || !document.oncopy) {
-                alert('No intentes manipular la página.');
-                window.location.reload();
-            }
-        }, 1000);
     });
     </script>
 </body>
