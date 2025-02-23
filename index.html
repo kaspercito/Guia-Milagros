@@ -263,20 +263,26 @@
         }
         #scrollTop {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            padding: 10px;
+            bottom: 30px; /* Aumentado desde 20px */
+            right: 30px;  /* Aumentado desde 20px */
+            padding: 12px 16px; /* Ligeramente más grande */
             background: #ff4d4d;
             color: #fff;
             border: none;
             border-radius: 50%;
             cursor: pointer;
             display: none;
-            transition: background 0.2s ease;
+            transition: background 0.2s ease, transform 0.2s ease; /* Añadida transición para transform */
+            font-size: 1.2em; /* Tamaño de fuente más grande */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); /* Sombra para que destaque */
         }
+        
         #scrollTop:hover {
             background: #cc0000;
+            transform: scale(1.1); /* Efecto de aumento al pasar el mouse */
         }
+        
+        /* Ajuste para el lightbox */
         #lightbox {
             display: none;
             position: fixed;
@@ -284,14 +290,19 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.9); /* Fondo un poco más oscuro */
             z-index: 10001;
             text-align: center;
+            overflow: auto; /* Permitir scroll si la imagen es muy grande */
         }
+        
         #lightboxImg {
-            max-width: 90%;
-            max-height: 90%;
-            margin-top: 5%;
+            max-width: 85%; /* Reducido desde 90% para más espacio */
+            max-height: 85%; /* Reducido desde 90% */
+            margin: 5vh auto; /* Centrado verticalmente con margen automático */
+            display: block; /* Asegurar que sea bloque y centrado */
+            border: 2px solid #ff4d4d; /* Borde para destacar */
+            border-radius: 5px;
         }
         @media (max-width: 768px) {
             header h1 { font-size: 1.5em; }
