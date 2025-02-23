@@ -14,6 +14,31 @@
     
       gtag('config', 'G-724N3MWGF2');
     </script>
+    
+    <script>
+        document.oncontextmenu = function() { alert('El clic derecho está deshabilitado.'); return false; };
+        document.onkeydown = function(e) {
+            if ((e.ctrlKey || e.metaKey) && ['c', 'p', 's'].includes(e.key.toLowerCase())) {
+                var sel = window.getSelection();
+                var el = sel.anchorNode ? sel.anchorNode.parentElement : null;
+                if (e.key.toLowerCase() === 'c' && el && (el.tagName === 'CODE' || el.tagName === 'A')) return true;
+                alert('Acción no permitida.');
+                return false;
+            }
+            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I')) {
+                alert('Inspeccionar el código no está permitido.');
+                return false;
+            }
+        };
+        document.oncopy = function(e) {
+            var sel = window.getSelection();
+            var el = sel.anchorNode ? sel.anchorNode.parentElement : null;
+            if (el && (el.tagName === 'CODE' || el.tagName === 'A')) return true;
+            alert('Copiar no está permitido, excepto para rutas, comandos y enlaces.');
+            e.preventDefault();
+        };
+    </script>
+    
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -228,17 +253,17 @@
         }
     </style>
 </head>
-<body oncontextmenu="return false;">
+<body oncontextmenu="alert('El clic derecho está deshabilitado.'); return false;" 
+      onkeydown="blockKeys(event);" 
+      oncopy="checkCopy(event);">
     <div class="overlay"></div>
     <div id="passwordPrompt">
         <h2>Ingrese la Contraseña</h2>
         <input type="password" id="passwordInput" placeholder="Contraseña">
         <br>
-        <button id="accessButton">Acceder</button> <!-- Cambié a ID para mejor control -->
+        <button id="accessButton">Acceder</button>
     </div>
-
     <canvas id="particlesCanvas"></canvas>
-    
     <header>
         <h1>Guía Completa de Screenshare</h1>
     </header>
@@ -605,51 +630,118 @@
             canvas.height = window.innerHeight;
         });
 
-        // Permitir copiar solo en <code> y <a>
-        document.addEventListener('copy', function(e) {
-            const selection = window.getSelection();
-            const selectedElement = selection.anchorNode ? selection.anchorNode.parentElement : null;
-
-            if (selectedElement && (selectedElement.tagName === 'CODE' || selectedElement.tagName === 'A')) {
-                return true; // Permitir copiar
-            }
-
-            e.preventDefault();
-            alert('Copiar no está permitido, excepto para rutas, comandos y enlaces.');
-        });
-
-        document.addEventListener('keydown', function(e) {
-            const selection = window.getSelection();
-            const selectedElement = selection.anchorNode ? selection.anchorNode.parentElement : null;
-
-            // Permitir Ctrl+C solo en <code> o <a>
-            if ((e.ctrlKey || e.metaKey) && e.key === 'c') {
-                if (selectedElement && (selectedElement.tagName === 'CODE' || selectedElement.tagName === 'A')) {
-                    return true;
-                }
-                e.preventDefault();
+        // Funciones inline para eventos en <body>
+        function blockKeys(e) {
+            var sel = window.getSelection();
+            var el = sel.anchorNode ? sel.anchorNode.parentElement : null;
+            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'c') {
+                if (el && (el.tagName === 'CODE' || el.tagName === 'A')) return true;
                 alert('Copiar no está permitido, excepto para rutas, comandos y enlaces.');
-            }
-
-            // Bloquear otras combinaciones
-            if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
                 e.preventDefault();
-                alert('Imprimir o guardar como PDF no está permitido.');
             }
-            if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+            if ((e.ctrlKey || e.metaKey) && ['p', 's'].includes(e.key.toLowerCase())) {
+                alert('Imprimir o guardar no está permitido.');
                 e.preventDefault();
-                alert('Guardar la página no está permitido.');
             }
             if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I')) {
-                e.preventDefault();
                 alert('Inspeccionar el código no está permitido.');
+                e.preventDefault();
             }
-        });
+        }
 
-        document.addEventListener('contextmenu', function(e) {
+        function checkCopy(e) {
+            var sel = window.getSelection();
+            var el = sel.anchorNode ? sel.anchorNode.parentElement : null;
+            if (el && (el.tagName === 'CODE' || el.tagName === 'A')) return true;
+            alert('Copiar no está permitido, excepto para rutas, comandos y enlaces.');
             e.preventDefault();
-            alert('El clic derecho está deshabilitado.');
-        });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const correctPassword = atob('T2xpdmVy'); // 'Oliver' en base64
+
+            function checkPassword() {
+                const input = document.getElementById('passwordInput').value;
+                console.log('Contraseña ingresada:', input);
+                if (input === correctPassword) {
+                    console.log('Contraseña correcta, mostrando contenido');
+                    localStorage.setItem('accessGranted', 'true');
+                    document.getElementById('passwordPrompt').style.display = 'none';
+                    document.getElementById('content').style.display = 'block';
+                } else {
+                    console.log('Contraseña incorrecta');
+                    alert('Contraseña incorrecta. Intenta de nuevo.');
+                    document.getElementById('passwordInput').value = '';
+                }
+            }
+
+            if (localStorage.getItem('accessGranted') === 'true') {
+                document.getElementById('passwordPrompt').style.display = 'none';
+                document.getElementById('content').style.display = 'block';
+            }
+
+            const accessButton = document.getElementById('accessButton');
+            if (accessButton) {
+                accessButton.addEventListener('click', checkPassword);
+            }
+
+            const passwordInput = document.getElementById('passwordInput');
+            if (passwordInput) {
+                passwordInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        console.log('Enter presionado');
+                        checkPassword();
+                    }
+                });
+            }
+
+            // Partículas de fondo (optimizado para móviles)
+            const canvas = document.getElementById('particlesCanvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const isMobile = window.innerWidth <= 768;
+            const particleCount = isMobile ? 15 : 50; // Reducido en móviles
+            const particles = [];
+            for (let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    radius: Math.random() * 3 + 1,
+                    speedX: (Math.random() - 0.5) * (isMobile ? 1 : 2),
+                    speedY: (Math.random() - 0.5) * (isMobile ? 1 : 2)
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = 'rgba(255, 77, 77, 0.5)';
+                particles.forEach(p => {
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    ctx.fill();
+                    p.x += p.speedX;
+                    p.y += p.speedY;
+                    if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
+                    if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
+                });
+                requestAnimationFrame(animate);
+            }
+            if (!isMobile) animate(); // Solo en escritorio
+
+            window.addEventListener('resize', () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            });
+
+            // Detección de manipulaciones
+            setInterval(function() {
+                if (!document.oncontextmenu || !document.onkeydown || !document.oncopy) {
+                    alert('No intentes manipular la página.');
+                    window.location.reload();
+                }
+            }, 1000);
 
         console.log('Página cargada, esperando entrada de contraseña');
     });
