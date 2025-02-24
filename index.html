@@ -651,39 +651,39 @@
             </ul>
         </div>
 
-<div class="section" id="dps">
-    <h2>Proceso “DPS” (Diagnostic Policy Service)</h2>
-    <p>Muchos clientes con "self-destruct" reinician el proceso "DPS" (Servicio de Directivas de Diagnóstico) al eliminarse para ocultar rastros. Podemos verificar su estado y detectar manipulaciones.</p>
-    
-    <h3>Verificar estado con CMD</h3>
-    <p>Abrir CMD y ejecutar:</p>
-    <pre><code>sc query dps</code></pre>
-    <li>Si aparece "RUNNING", el proceso está activo y no se cerró nada recientemente.</li>
-    <li>Si aparece "STOPPED", indica que se cerraron procesos, lo cual es sospechoso.</li>
-    <img src="https://i.imgur.com/placeholder.png" alt="Resultado sc query dps"> <!-- Reemplaza con una captura real -->
-    
-    <h3>Revisión en ProcessHacker</h3>
-    <p>Ejecutar ProcessHacker como administrador, buscar el proceso "DPS":</p>
-    <li>Doble clic en "DPS" > pestaña "General".</li>
-    <img src="https://i.imgur.com/vgh05O4.png" alt="Propiedades DPS en ProcessHacker"> <!-- Imagen de ejemplo; ajusta según necesites -->
-    <li>Verificar la hora de inicio ("Start time"). Si coincide con el momento en que el usuario fue congelado (frozeado), ban por "Modificaciones en SS".</li>
-    
-    <h3>Análisis de Memoria en DPS</h3>
-    <p>En ProcessHacker, analizar el proceso "DPS" para buscar .exe modificados:</p>
-    <ol>
-        <li>Ir a "Memory" > Desmarcar "Hide free regions" > "Strings".</li>
-        <li>Configurar: Escribir <code>4</code>, marcar "Image" y "Mapped", luego "OK".</li>
-        <li>Filtrar con: <code>.exe</code>.</li>
-        <img src="https://i.imgur.com/DxpaWIQ.png" alt="Strings en DPS"> <!-- Imagen de ejemplo -->
-        <li>Revisar los resultados. Si aparecen .exe sospechosos o rutas repetidas (archivos reemplazados), ban por "Modificaciones en SS".</li>
-    </ol>
-    <p>Nota: Los archivos reemplazados aparecerán varias veces en la lista, lo que indica posible manipulación.</p>
-    
-    <h3>Proceso con Más Memoria</h3>
-    <p>Identificar el proceso que usa más MB en ProcessHacker (ordenar por "Private Bytes") y repetir el análisis anterior:</p>
-    <li>Filtrar con <code>.exe</code> en "Strings".</li>
-    <li>Buscar .exe modificados o sospechosos recientemente.</li>
-</div>
+        <div class="section" id="dps">
+            <h2>Proceso “DPS” (Diagnostic Policy Service)</h2>
+            <p>Muchos clientes con "self-destruct" reinician el proceso "DPS" (Servicio de Directivas de Diagnóstico) al eliminarse para ocultar rastros. Podemos verificar su estado y detectar manipulaciones.</p>
+            
+            <h3>Verificar estado con CMD</h3>
+            <p>Abrir CMD y ejecutar:</p>
+            <pre><code>sc query dps</code></pre>
+            <li>Si aparece "RUNNING", el proceso está activo y no se cerró nada recientemente.</li>
+            <li>Si aparece "STOPPED", indica que se cerraron procesos, lo cual es sospechoso.</li>
+            <img src="https://i.imgur.com/placeholder.png" alt="Resultado sc query dps"> <!-- Reemplaza con una captura real -->
+            
+            <h3>Revisión en ProcessHacker</h3>
+            <p>Ejecutar ProcessHacker como administrador, buscar el proceso "DPS":</p>
+            <li>Doble clic en "DPS" > pestaña "General".</li>
+            <img src="https://i.imgur.com/vgh05O4.png" alt="Propiedades DPS en ProcessHacker"> <!-- Imagen de ejemplo; ajusta según necesites -->
+            <li>Verificar la hora de inicio ("Start time"). Si coincide con el momento en que el usuario fue congelado (frozeado), ban por "Modificaciones en SS".</li>
+            
+            <h3>Análisis de Memoria en DPS</h3>
+            <p>En ProcessHacker, analizar el proceso "DPS" para buscar .exe modificados:</p>
+            <ol>
+                <li>Ir a "Memory" > Desmarcar "Hide free regions" > "Strings".</li>
+                <li>Configurar: Escribir <code>4</code>, marcar "Image" y "Mapped", luego "OK".</li>
+                <li>Filtrar con: <code>.exe</code>.</li>
+                <img src="https://i.imgur.com/DxpaWIQ.png" alt="Strings en DPS"> <!-- Imagen de ejemplo -->
+                <li>Revisar los resultados. Si aparecen .exe sospechosos o rutas repetidas (archivos reemplazados), ban por "Modificaciones en SS".</li>
+            </ol>
+            <p>Nota: Los archivos reemplazados aparecerán varias veces en la lista, lo que indica posible manipulación.</p>
+            
+            <h3>Proceso con Más Memoria</h3>
+            <p>Identificar el proceso que usa más MB en ProcessHacker (ordenar por "Private Bytes") y repetir el análisis anterior:</p>
+            <li>Filtrar con <code>.exe</code> en "Strings".</li>
+            <li>Buscar .exe modificados o sospechosos recientemente.</li>
+        </div>
         <div class="section" id="dlls">
             <h2>DLLs Sospechosos</h2>
             <p>Buscar en cualquier proceso:</p>
@@ -778,7 +778,7 @@
     </div>
     
     <footer>
-        <p>Actualizado el 23/02/2025 22:14 P.M. | Creado por Kaspercito</p>
+        <p>Actualizado el 23/02/2025 22:17 P.M. | Creado por Kaspercito</p>
     </footer>
     <button id="scrollTop">↑</button>
     <div id="lightbox">
