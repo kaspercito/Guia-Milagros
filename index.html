@@ -324,12 +324,6 @@
             .container { padding: 8px; }
             footer { padding: 10px; font-size: 0.8em; }
         }
-        .highlight {
-            background-color: yellow;
-            color: black;
-            padding: 2px;
-            border-radius: 3px;
-        }
     </style>
     
 </head>
@@ -350,7 +344,6 @@
 <nav>
     <div class="search-container">
         <input type="text" id="searchBar" placeholder="Buscar en la guía...">
-        <div id="searchMessage" style="color: #ff4d4d; display: none; margin-top: 5px;"></div>
     </div>
     <div class="nav-links">
         <a href="#notas">Notas</a>
@@ -785,7 +778,7 @@
     </div>
     
     <footer>
-        <p>Actualizado el 23/02/2025 22:34 P.M. | Creado por Kaspercito</p>
+        <p>Actualizado el 23/02/2025 22:17 P.M. | Creado por Kaspercito</p>
     </footer>
     <button id="scrollTop">↑</button>
     <div id="lightbox">
@@ -794,7 +787,7 @@
     
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        
+
         const correctPassword = atob('T2xpdmVy');
         const passwordPrompt = document.getElementById('passwordPrompt');
         const content = document.getElementById('content');
@@ -871,41 +864,13 @@
         });
 
         const searchBar = document.getElementById('searchBar');
-        const searchMessage = document.getElementById('searchMessage');
-        
-        if (searchBar && searchMessage) {
+        if (searchBar) {
             searchBar.addEventListener('input', function(e) {
-                const searchTerm = e.target.value.toLowerCase().trim();
-                let hasMatches = false;
-        
+                const searchTerm = e.target.value.toLowerCase();
                 document.querySelectorAll('.section').forEach(section => {
-                    section.querySelectorAll('.highlight').forEach(highlight => {
-                        const parent = highlight.parentNode;
-                        parent.replaceChild(document.createTextNode(highlight.textContent), highlight);
-                    });
-                    section.style.display = 'block';
+                    const text = section.textContent.toLowerCase();
+                    section.style.display = text.includes(searchTerm) ? 'block' : 'none';
                 });
-        
-                if (searchTerm) {
-                    document.querySelectorAll('.section').forEach(section => {
-                        const text = section.textContent.toLowerCase();
-                        if (text.includes(searchTerm)) {
-                            hasMatches = true;
-                            
-                            const regex = new RegExp(`(${searchTerm})`, 'gi');
-                            const innerHTML = section.innerHTML.replace(regex, '<span class="highlight">$1</span>');
-                            section.innerHTML = innerHTML;
-                        } else {
-                            section.style.display = 'none';
-                        }
-                    });
-        
-                    
-                    searchMessage.textContent = hasMatches ? '' : 'No se encontraron coincidencias';
-                    searchMessage.style.display = hasMatches ? 'none' : 'block';
-                } else {
-                    searchMessage.style.display = 'none';
-                }
             });
         }
 
