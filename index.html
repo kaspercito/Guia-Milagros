@@ -52,6 +52,7 @@
             line-height: 1.6;
             margin: 0;
             padding: 0;
+            padding-bottom: 80px;
             background-color: #1a1a1a;
             color: #f0f0f0;
             -webkit-user-select: none;
@@ -212,8 +213,7 @@
         }
         
         .update-info {
-            color: #d9d9d9; /* Gris claro */
-            /* Quitamos font-style: italic */
+            color: #d9d9d9;
         }
         
         .separator {
@@ -232,7 +232,6 @@
             color: #fff;
         }
         
-        /* Responsividad */
         @media (max-width: 480px) {
             footer p {
                 font-size: 0.9em;
@@ -920,7 +919,6 @@
             searchBar.addEventListener('input', function(e) {
                 const searchTerm = e.target.value.trim().toLowerCase();
     
-                // Limpiar resaltados previos
                 document.querySelectorAll('.highlight').forEach(highlight => {
                     const parent = highlight.parentNode;
                     parent.replaceChild(document.createTextNode(highlight.textContent), highlight);
@@ -931,10 +929,8 @@
                     const text = section.textContent.toLowerCase();
                     const sectionHasMatch = text.includes(searchTerm);
     
-                    // Mostrar u ocultar sección
                     section.style.display = sectionHasMatch || !searchTerm ? 'block' : 'none';
     
-                    // Resaltar coincidencias si hay un término y la sección es visible
                     if (searchTerm && sectionHasMatch) {
                         const textNodes = getTextNodes(section);
                         textNodes.forEach(node => {
