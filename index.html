@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Guía SS Milagros</title>
     <link rel="icon" href="arefy.png" type="image/png">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-724N3MWGF2"></script>
     <script>
@@ -329,13 +328,15 @@
     
 </head>
 <body oncontextmenu="alert('El clic derecho está deshabilitado.'); return false;" 
+      onkeydown="blockKeys(event);" 
+      oncopy="checkCopy(event);">
+    <div class="overlay"></div>
     <div id="passwordPrompt">
         <h2>Ingrese la Contraseña</h2>
         <input type="password" id="passwordInput" placeholder="Contraseña">
         <br>
         <button id="accessButton">Acceder</button>
     </div>
-    <div id="content" style="display: none;"></div>
     <canvas id="particlesCanvas"></canvas>
     <header>
         <h1>Guía Completa de Screenshare</h1>
@@ -777,7 +778,7 @@
     </div>
     
     <footer>
-        <p>Actualizado el 23/02/2025 22:17 P.M. | Creado por Kaspercito</p>
+        <p>Actualizado el 23/02/2025 22:34 P.M. | Creado por Kaspercito</p>
     </footer>
     <button id="scrollTop">↑</button>
     <div id="lightbox">
@@ -786,28 +787,26 @@
     
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const encryptedContent = "U2FsdGVkX18Xz5Q8X8Kj8g...";
+
+        const correctPassword = atob('T2xpdmVy');
         const passwordPrompt = document.getElementById('passwordPrompt');
         const content = document.getElementById('content');
         const accessButton = document.getElementById('accessButton');
         const passwordInput = document.getElementById('passwordInput');
 
+        if (!passwordPrompt || !content || !accessButton || !passwordInput) {
+            console.error('Falta un elemento en el DOM:', { passwordPrompt, content, accessButton, passwordInput });
+            return;
+        }
+
         function checkPassword() {
             const input = passwordInput.value.trim();
-            try {
-                const decrypted = CryptoJS.AES.decrypt(encryptedContent, input).toString(CryptoJS.enc.Utf8);
-                if (decrypted && decrypted.includes('<div class="container" id="content">')) { // Verifica que sea válido
-                    passwordPrompt.style.display = 'none';
-                    content.innerHTML = decrypted;
-                    content.style.display = 'block';
-                    initializePage(); // Llama a función para inicializar búsqueda, lightbox, etc.
-                } else {
-                    alert('Contraseña incorrecta. Intenta de nuevo.');
-                    passwordInput.value = '';
-                    passwordInput.focus();
-                }
-            } catch (e) {
-                alert('Contraseña incorrecta o error al descifrar.');
+            if (input === correctPassword) {
+                passwordPrompt.style.display = 'none';
+                content.style.display = 'block';
+                console.log('Acceso concedido');
+            } else {
+                alert('Contraseña incorrecta. Intenta de nuevo.');
                 passwordInput.value = '';
                 passwordInput.focus();
             }
@@ -818,23 +817,12 @@
         passwordInput.focus();
 
         accessButton.addEventListener('click', checkPassword);
-        passwordInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') checkPassword();
-        });
 
-        // Función para inicializar el resto de la página después de descifrar
-        function initializePage() {
-            // Aquí va el código de búsqueda, lightbox, partículas, scrollTop, etc.
-            const searchBar = document.getElementById('searchBar');
-            if (searchBar) {
-                searchBar.addEventListener('input', function(e) {
-                    const searchTerm = e.target.value.toLowerCase();
-                    document.querySelectorAll('.section').forEach(section => {
-                        const text = section.textContent.toLowerCase();
-                        section.style.display = text.includes(searchTerm) ? 'block' : 'none';
-                    });
-                });
+        passwordInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPassword();
             }
+        });
 
         const canvas = document.getElementById('particlesCanvas');
         const ctx = canvas.getContext('2d');
