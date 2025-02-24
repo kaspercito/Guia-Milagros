@@ -324,6 +324,13 @@
             .container { padding: 8px; }
             footer { padding: 10px; font-size: 0.8em; }
         }
+
+        .highlight {
+            background-color: yellow;
+            color: black;
+            padding: 2px;
+            border-radius: 3px;
+        }
     </style>
     
 </head>
@@ -866,12 +873,89 @@
         const searchBar = document.getElementById('searchBar');
         if (searchBar) {
             searchBar.addEventListener('input', function(e) {
-                const searchTerm = e.target.value.toLowerCase();
+                const searchTerm = e.target.value.trim().toLowerCase();
+        
+                // Limpiar resaltados previos
+                document.querySelectorAll('.highlight').forEach(highlight => {
+                    const parent = highlight.parentNode;
+                    parent.replaceChild(document.createTextNode(highlight.textContent), highlight);
+                    parent.normalize();
+                });
+        
+                // Recorrer todas las secciones
                 document.querySelectorAll('.section').forEach(section => {
                     const text = section.textContent.toLowerCase();
-                    section.style.display = text.includes(searchTerm) ? 'block' : 'none';
+                    const sectionHasMatch = text.includes(searchTerm);
+        
+                    // Mostrar u ocultar sección según coincidencia
+                    section.style.display = sectionHasMatch || !searchTerm ? 'block' : 'none';
+        
+                    // Si hay término de búsqueda y la sección es visible, resaltar coincidencias
+                    if (searchTerm && sectionHasMatch) {
+                        const textNodes = getTextNodes(section);
+                        textNodes.forEach(node => {
+                            const nodeText = node.textContent.toLowerCase();
+                            const index = nodeText.indexOf(searchTerm);
+        
+                            if (index !== -1) {
+                                const fragment = document.createDocumentFragment();
+                                let lastIndex = 0;
+        
+                                while (index !== -1) {
+                                    // Texto antes de la coincidencia
+                                    if (index > lastIndex) {
+                                        fragment.appendChild(document.createTextNode(
+                                            node.textContent.substring(lastIndex, index)
+                                        ));
+                                    }
+        
+                                    // Texto coincidente (resaltado)
+                                    const highlightSpan = document.createElement('span');
+                                    highlightSpan.className = 'highlight';
+                                    highlightSpan.textContent = node.textContent.substring(index, index + searchTerm.length);
+                                    fragment.appendChild(highlightSpan);
+        
+                                    lastIndex = index + searchTerm.length;
+                                    index = nodeText.indexOf(searchTerm, lastIndex);
+                                }
+        
+                                // Agregar el resto del texto
+                                if (lastIndex < node.textContent.length) {
+                                    fragment.appendChild(document.createTextNode(
+                                        node.textContent.substring(lastIndex)
+                                    ));
+                                }
+        
+                                node.parentNode.replaceChild(fragment, node);
+                            }
+                        });
+                    }
                 });
             });
+        }
+        
+        // Función auxiliar para obtener nodos de texto
+        function getTextNodes(node) {
+            const textNodes = [];
+            const walker = document.createTreeWalker(
+                node,
+                NodeFilter.SHOW_TEXT,
+                {
+                    acceptNode: function(n) {
+                        const parent = n.parentElement;
+                        if (parent && (parent.tagName === 'CODE' || parent.tagName === 'A' || parent.classList.contains('highlight'))) {
+                            return NodeFilter.FILTER_REJECT;
+                        }
+                        return NodeFilter.FILTER_ACCEPT;
+                    }
+                }
+            );
+        
+            let currentNode;
+            while (currentNode = walker.nextNode()) {
+                textNodes.push(currentNode);
+            }
+            return textNodes;
         }
 
         const scrollTopBtn = document.getElementById('scrollTop');
