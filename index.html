@@ -794,7 +794,6 @@
     
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-    document.querySelector('footer p').textContent = `Actualizado el ${new Date().toLocaleString()} | Creado por Kaspercito`;
         
         const correctPassword = atob('T2xpdmVy');
         const passwordPrompt = document.getElementById('passwordPrompt');
@@ -892,7 +891,7 @@
                         const text = section.textContent.toLowerCase();
                         if (text.includes(searchTerm)) {
                             hasMatches = true;
-                            // Resaltar coincidencias
+                            
                             const regex = new RegExp(`(${searchTerm})`, 'gi');
                             const innerHTML = section.innerHTML.replace(regex, '<span class="highlight">$1</span>');
                             section.innerHTML = innerHTML;
@@ -901,7 +900,7 @@
                         }
                     });
         
-                    // Mostrar mensaje si no hay coincidencias
+                    
                     searchMessage.textContent = hasMatches ? '' : 'No se encontraron coincidencias';
                     searchMessage.style.display = hasMatches ? 'none' : 'block';
                 } else {
