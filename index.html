@@ -348,6 +348,7 @@
     </div>
     <div class="nav-links">
         <a href="#notas">Notas</a>
+        <a href="#hacks">Lista de Clientes Ilegales</a>
         <a href="#ip">Evitar Robo de IP</a>
         <a href="#metodos">Métodos Generales</a>
         <a href="#regedit">Regedit</a>
@@ -375,6 +376,44 @@
             <li>Usar una VPN al hacer una SS o desactivar la conexión directa para evitar que saquen la IP mediante AnyDesk.</li>
         </div>
 
+
+        <div class="section" id="hacks">
+        <h2>Clientes, Hacks, DLLs Detectables</h2>
+        <p>A continuación se listan clientes hackeados, ghost clients y DLLs inyectables comunes en Minecraft. Estos pueden detectarse en SS usando las herramientas descritas en esta guía.</p>
+    
+        <h3>Clientes Hackeados</h3>
+        <p>Clientes completos con hacks integrados que modifican el juego. No siempre están diseñados para evadir SS.</p>
+        <ul>
+            <li><strong>Huzuni</strong>: Cliente hackeado para 1.7.10/1.8.9 con GUI (Shift derecho). Incluye KillAura, X-Ray, Fly, AutoClicker y más. Detectable en <code>shell:recent</code> como <code>Huzuni.jar</code>.</li>
+            <li><strong>Wurst</strong>: Cliente gratuito y de código abierto, configurable y con soporte Forge. Ofrece desde Fly hasta X-Ray. Rastros en <code>Prefetch</code>.</li>
+            <li><strong>LiquidBounce</strong>: Cliente open-source con opciones blatant y algunas funciones ghost. Compatible con varias versiones; buscar <code>LiquidBounce.jar</code>.</li>
+            <li><strong>Aristois</strong>: Cliente gratuito con soporte para 1.8.9 a 1.21. Incluye KillAura, ESP y módulos de utilidad. Detectable como <code>Aristois.jar</code> o en procesos Java.</li>
+            <li><strong>Meteor</strong>: Cliente moderno para Fabric con addons opcionales. Popular en anarchy; buscar <code>Meteor.jar</code> o módulos en <code>%appdata%</code>.</li>
+            <li><strong>Konas</strong>: Cliente privado (versiones archivadas gratis), usado en anarchy. Incluye hacks avanzados; revisar <code>Konas.jar</code> o logs.</li>
+            <li><strong>Rise</strong>: Cliente híbrido con soporte para scripts. Ofrece KillAura y Speed; detectable en <code>shell:recent</code>.</li>
+            <li><strong>Nodus</strong>: Cliente clásico, ahora obsoleto. Fue popular en 1.5.2/1.7.10; buscar <code>Nodus.jar</code>.</li>
+            <li><strong>Raven (B3, B+)</strong>: Cliente gratuito básico para 1.8.9. Incluye AutoClicker y Reach; revisar <code>Raven.jar</code>.</li>
+        </ul>
+    
+        <h3>Ghost Clients</h3>
+        <p>Clientes diseñados para ser discretos y evadir detección en SS o anticheats.</p>
+        <ul>
+            <li><strong>Vape (V4, Lite)</strong>: Diseñado para discreción y bypass SS. Vape V4 es completo, Lite es más ligero. Buscar <code>Vape.dll</code> o rastros en <code>javaw.exe</code>.</li>
+            <li><strong>Drip</strong>: Premium con protección avanzada contra SS. Incluye visuales falsos; revisar procesos con strings <code>Drip</code>.</li>
+            <li><strong>Slinky</strong>: Enfocado en PvP sin protección SS fuerte. Detectable en <code>shell:recent</code> como <code>Slinky.jar</code>.</li>
+            <li><strong>Crim</strong>: Autoclick inyectado con reducción de Knockback (KB). Buscar <code>Crim.dll</code> o actividad sospechosa en memoria.</li>
+        </ul>
+        <p>Nota: Usa ProcessHacker para filtrar strings como <code>Vape</code> o <code>Crim</code> en procesos activos.</p>
+    
+        <h3>DLLs Inyectables</h3>
+        <p>Librerías inyectadas en procesos de Minecraft para añadir hacks específicos.</p>
+        <ul>
+            <li><strong>420.dll</strong>: Autoclicker inyectado. Detectable en memoria con <code>ProcessHacker > Strings > 420</code>.</li>
+            <li><strong>ARTEX64.dll</strong>: Similar a 420.dll, usado para clics automáticos. Buscar en <code>Regedit > OpenSavePidlMRU\dll</code>.</li>
+        </ul>
+        <p>Si encuentras estas DLLs en SS, ban por "Modificaciones en SS".</p>
+            
+    </div>
         <div class="section" id="ip">
             <h2>Evitar Robo de IP</h2>
             <p>Aunque se sugiere usar VPN, también puedes desactivar la conexión directa en AnyDesk:</p>
