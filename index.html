@@ -192,11 +192,56 @@
         footer {
             text-align: center;
             padding: 20px;
-            background: #0d0d0d;
+            background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%); /* Gradiente suave */
             color: #fff;
             position: relative;
             bottom: 0;
             width: 100%;
+            border-top: 2px solid #ff4d4d; /* Borde superior rojo */
+            box-shadow: 0 -2px 10px rgba(255, 77, 77, 0.3); /* Sombra sutil */
+        }
+        
+        footer p {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            font-size: 1.1em;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px; /* Espacio entre elementos */
+        }
+        
+        .update-info {
+            color: #d9d9d9; /* Gris claro */
+            font-style: italic; /* Cursiva para un toque elegante */
+        }
+        
+        .separator {
+            color: #ff4d4d; /* Rojo del tema */
+            font-size: 1.2em;
+            text-shadow: 0 0 5px rgba(255, 77, 77, 0.5); /* Sombra brillante */
+        }
+        
+        .creator {
+            color: #ff4d4d; /* Rojo destacado */
+            font-weight: bold;
+            transition: color 0.3s ease; /* Transición suave */
+        }
+        
+        footer p:hover .creator {
+            color: #fff; /* Cambio de color al pasar el mouse */
+        }
+        
+        /* Responsividad */
+        @media (max-width: 480px) {
+            footer p {
+                font-size: 0.9em;
+                flex-direction: column;
+                gap: 5px;
+            }
+            .separator {
+                font-size: 1em;
+            }
         }
         .overlay {
             position: fixed;
@@ -785,7 +830,11 @@
     </div>
     
     <footer>
-        <p>Actualizado el 23/02/2025 22:17 P.M. | Creado por Kaspercito</p>
+        <p>
+            <span class="update-info">Actualizado el 23/02/2025 22:17 P.M.</span>
+            <span class="separator">✦</span>
+            <span class="creator">Creado por Kaspercito</span>
+        </p>
     </footer>
     <button id="scrollTop">↑</button>
     <div id="lightbox">
