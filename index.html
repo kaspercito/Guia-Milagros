@@ -847,39 +847,45 @@
     
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const correctPassword = atob('dmFsb3Jarte=');
-        const passwordPrompt = document.getElementById('passwordPrompt');
-        const content = document.getElementById('content');
-        const accessButton = document.getElementById('accessButton');
-        const passwordInput = document.getElementById('passwordInput');
-    
-        if (!passwordPrompt || !content || !accessButton || !passwordInput) {
-            console.error('Falta un elemento en el DOM:', { passwordPrompt, content, accessButton, passwordInput });
-            return;
+    const correctPassword = atob('dmFsb3Jarte='); // Esto debería ser "valorarte"
+    const passwordPrompt = document.getElementById('passwordPrompt');
+    const content = document.getElementById('content');
+    const accessButton = document.getElementById('accessButton');
+    const passwordInput = document.getElementById('passwordInput');
+
+    // Para depurar: imprime la contraseña esperada en la consola
+    console.log('Contraseña esperada:', correctPassword);
+
+    if (!passwordPrompt || !content || !accessButton || !passwordInput) {
+        console.error('Falta un elemento en el DOM:', { passwordPrompt, content, accessButton, passwordInput });
+        return;
+    }
+
+    function checkPassword() {
+        const input = passwordInput.value.trim(); // Elimina espacios al inicio y final
+        console.log('Entrada del usuario:', input); // Para depurar
+        console.log('Comparación:', input === correctPassword); // Para depurar
+
+        if (input === correctPassword) {
+            passwordPrompt.style.display = 'none';
+            content.style.display = 'block';
+            console.log('Acceso concedido');
+        } else {
+            alert('Contraseña incorrecta. Intenta de nuevo.');
+            passwordInput.value = '';
+            passwordInput.focus();
         }
-    
-        function checkPassword() {
-            const input = passwordInput.value.trim();
-            if (input === correctPassword) {
-                passwordPrompt.style.display = 'none';
-                content.style.display = 'block';
-                console.log('Acceso concedido');
-            } else {
-                alert('Contraseña incorrecta. Intenta de nuevo.');
-                passwordInput.value = '';
-                passwordInput.focus();
-            }
-        }
-    
-        passwordPrompt.style.display = 'block';
-        content.style.display = 'none';
-        passwordInput.focus();
-    
-        accessButton.addEventListener('click', checkPassword);
-        passwordInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') checkPassword();
-        });
-    
+    }
+
+    passwordPrompt.style.display = 'block';
+    content.style.display = 'none';
+    passwordInput.focus();
+
+    accessButton.addEventListener('click', checkPassword);
+    passwordInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') checkPassword();
+    });
+        
         const canvas = document.getElementById('particlesCanvas');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
